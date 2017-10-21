@@ -3,6 +3,7 @@ package sk.stopangin.service;
 import sk.stopangin.board.Board;
 import sk.stopangin.board.RandomSimpleGameBoardGenerator;
 import sk.stopangin.game.Game;
+import sk.stopangin.game.Round;
 import sk.stopangin.game.SimpleGame;
 import sk.stopangin.piece.LinearMovingPiece;
 import sk.stopangin.piece.Piece;
@@ -13,6 +14,8 @@ import java.util.*;
 
 //todo into api module
 public class GameService {
+    //    private GameRepository gameRepository;
+
     public Game startGame() {
         Game<Integer> game = new SimpleGame();
         Board board = RandomSimpleGameBoardGenerator.generate();
@@ -35,7 +38,23 @@ public class GameService {
         players.addAll(Arrays.asList(p1, p2));
 
         game.startGame(board, players, p1);
-
         return game;
     }
+
+    public Round<Integer> createNextRound(Game game) {
+        return game.createNexRound();
+    }
+
+    public void commitRound(Game game) {
+        game.commitRound();
+    }
+
+    public static void main(String[] args) {
+        GameService gameService = new GameService();
+        Game game = gameService.startGame(); //ziskat z game repo
+        gameService.createNextRound(game);
+        gameService.commitRound(game);
+
+    }
+
 }

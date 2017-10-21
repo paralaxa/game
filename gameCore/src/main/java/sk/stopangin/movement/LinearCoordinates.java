@@ -1,5 +1,4 @@
 package sk.stopangin.movement;
 
-public class LinearCoordinates implements Coordinates {
-    private int coordinate;
+public class LinearCoordinates extends Coordinates<Integer> {
 }

@@ -32,7 +32,8 @@ public abstract class Piece extends BaseIdentifiableEntity {
     private Map<Coordinates, MovementType> calculateAllPossibleCoordinatesWithMovementTypes() {
         Map<Coordinates, MovementType> coordinatesMovementTypeMap = new HashMap<>();
         for (MovementType movementType : movementTypes) {
-            coordinatesMovementTypeMap.put(movementType.apply(), movementType);
+            movementType.apply(actualPosition);
+            coordinatesMovementTypeMap.put(, movementType);
         }
         return coordinatesMovementTypeMap;
     }

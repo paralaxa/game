@@ -1,6 +1,10 @@
 package sk.stopangin.movement;
 
+import sk.stopangin.piece.Piece;
+
+import java.util.Set;
+
 //definuje sposob pohybu (napr sikmo, rovno, do L...)
-public interface MovementType {
-    Coordinates apply(); //aplikovanim movement typu dostanem nove coordinates (evetualne miesto noveho umiestnenia)
+public interface MovementType<T> {
+    Set<Coordinates<T>> getPossibleCoordinatesForPiece(Piece piece);
 }

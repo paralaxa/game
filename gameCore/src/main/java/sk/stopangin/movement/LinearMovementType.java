@@ -1,10 +1,14 @@
 package sk.stopangin.movement;
 
 
-public class LinearMovementType implements MovementType {
+import sk.stopangin.piece.Piece;
+
+import java.util.HashSet;
+import java.util.Set;
+
+public class LinearMovementType implements MovementType<Integer> {
     @Override
-    public void move(Movement movement) {
-        Coordinates newPocition = movement.getNewPocition();
-        movement.getPiece().setActualPosition(newPocition);
+    public Set<Coordinates<Integer>> getPossibleCoordinatesForPiece(Piece piece) {
+        return new HashSet<>();
     }
 }

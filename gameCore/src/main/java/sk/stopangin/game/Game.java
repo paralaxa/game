@@ -29,7 +29,7 @@ public abstract class Game<T extends Serializable> extends BaseIdentifiableEntit
     protected abstract Player nextPlayer();
 
 
-    protected final Round<T> createNexRound() {
+    public final Round<T> createNexRound() {
         return doCreateNewRound(nextPlayer());
     }
 

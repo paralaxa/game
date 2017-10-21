@@ -7,4 +7,5 @@ import sk.stopangin.piece.Piece;
 public class Movement {
     private Piece piece;
     private Coordinates newPocition;
+
 }

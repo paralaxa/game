@@ -37,7 +37,7 @@ public class SimpleGame extends Game<Integer> {
     }
 
     @Override
-    protected Round<Integer> doCreateNewRound(Player player) {
+    public Round<Integer> doCreateNewRound(Player player) {
         return new Round<>(nextPlayer(), LocalTime.now(), cubeThrowRoundDataGenerator.generate(), RoundState.NEW);
     }
 
