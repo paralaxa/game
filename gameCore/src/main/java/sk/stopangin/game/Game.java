@@ -14,7 +14,7 @@ public abstract class Game<T extends Serializable> extends BaseIdentifiableEntit
     private boolean initialized;
 
     public void initialize(Board board, Set<Player> players, Player activePlayer) {
-        if (isValidConfigration(players, board)) {
+        if (isValidConfiguration(players, board)) {
             setActivePlayer();
             if (isActivePlayerValid()) {
                 this.board = board;
@@ -31,7 +31,7 @@ public abstract class Game<T extends Serializable> extends BaseIdentifiableEntit
         }
     }
 
-    abstract boolean isValidConfigration(Set<Player> players, Board board);
+    abstract boolean isValidConfiguration(Set<Player> players, Board board);
 
     abstract Player setActivePlayer();
 

@@ -1,5 +1,5 @@
 package sk.stopangin.board;
 
-public abstract  class CircularBoard implements Board{
+public abstract  class CircularBoard extends Board{
 
 }

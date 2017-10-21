@@ -1,6 +1,7 @@
 package sk.stopangin.player;
 
 import lombok.Data;
+import sk.stopangin.board.Board;
 import sk.stopangin.entity.BaseIdentifiableEntity;
 import sk.stopangin.movement.Movement;
 import sk.stopangin.piece.Piece;
@@ -12,17 +13,21 @@ public abstract class Player extends BaseIdentifiableEntity {
     private String name;
     private Set<Piece> pieces;
 
-    public void doMove(Movement movement) {
-        canMovePiece(movement);
+    public void doMove(Board board, Movement movement) {
+        canMovePiece(board, movement);
     }
 
-    private void canMovePiece(Movement movement) {
-        if (pieces.contains(movement.getPiece())) {
-            doMovement(movement);
+    private void canMovePiece(Board board, Movement movement) {
+        if (isThisMinePiece(movement.getPiece())) {
+            doMovement(board, movement);
         }
     }
 
-    public abstract void doMovement(Movement movement);
+    private boolean isThisMinePiece(Piece piece) {
+        return pieces.contains(piece);
+    }
+
+    public abstract void doMovement(Board board, Movement movement);
 
 
 }
