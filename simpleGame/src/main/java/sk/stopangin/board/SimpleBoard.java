@@ -5,7 +5,12 @@ import sk.stopangin.movement.Movement;
 public class SimpleBoard extends LinearBoard {
 
     @Override
-    public boolean isMoveWithinBoundaries(Movement movement) {
+    protected boolean isMovementCollision(Movement movement) {
+        return false;
+    }
+
+    @Override
+    public boolean isMoveOutOfBoundaries(Movement movement) {
         return false;
     }
 }

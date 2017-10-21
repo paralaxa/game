@@ -5,6 +5,7 @@ import sk.stopangin.board.SimpleBoard;
 import sk.stopangin.player.Player;
 
 import java.time.LocalTime;
+import java.util.List;
 import java.util.Set;
 
 public class SimpleGame extends Game<Integer> {
@@ -13,11 +14,11 @@ public class SimpleGame extends Game<Integer> {
     private CubeThrowRoundDataGenerator cubeThrowRoundDataGenerator = new CubeThrowRoundDataGenerator(6);
 
     @Override
-    boolean isValidConfiguration(Set<Player> players, Board board) {
+    boolean isValidConfiguration(List<Player> players, Board board) {
         return isSimpleBoard(board) && hasTwoOrMorePlayers(players);
     }
 
-    private boolean hasTwoOrMorePlayers(Set<Player> players) {
+    private boolean hasTwoOrMorePlayers(List<Player> players) {
         return players.size() >= 2;
     }
 
@@ -26,13 +27,20 @@ public class SimpleGame extends Game<Integer> {
     }
 
     @Override
-    Player setActivePlayer() {
-        return null;
+    protected Player nextPlayer() {
+        int activePlayerIndex = getPlayers().indexOf(getActivePlayer());
+        int nextPlayerIndex = 0;
+        if (activePlayerIndex != getPlayers().size() - 1) {
+            nextPlayerIndex = activePlayerIndex + 1;
+        }
+        return getPlayers().get(nextPlayerIndex);
     }
 
     @Override
-    Round<Integer> createNewRound() {
-        return new Round<>(LocalTime.now(), cubeThrowRoundDataGenerator.generate());
-
+    protected Round<Integer> doCreateNewRound() {
+        setActivePlayer(nextPlayer());
+        return new Round<>(getActivePlayer(), LocalTime.now(), cubeThrowRoundDataGenerator.generate(), RoundState.NEW);
     }
+
+
 }

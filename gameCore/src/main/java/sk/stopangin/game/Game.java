@@ -1,21 +1,23 @@
 package sk.stopangin.game;
 
+import lombok.Data;
 import sk.stopangin.board.Board;
 import sk.stopangin.entity.BaseIdentifiableEntity;
 import sk.stopangin.player.Player;
 
 import java.io.Serializable;
-import java.util.Set;
+import java.util.List;
 
+@Data
 public abstract class Game<T extends Serializable> extends BaseIdentifiableEntity {
     private Board board;
-    private Set<Player> players;
+    private List<Player> players;
     private Player activePlayer;
     private boolean initialized;
 
-    public void initialize(Board board, Set<Player> players, Player activePlayer) {
+    public void initialize(Board board, List<Player> players, Player activePlayer) {
         if (isValidConfiguration(players, board)) {
-            setActivePlayer();
+            nextPlayer();
             if (isActivePlayerValid()) {
                 this.board = board;
                 this.players = players;
@@ -31,14 +33,20 @@ public abstract class Game<T extends Serializable> extends BaseIdentifiableEntit
         }
     }
 
-    abstract boolean isValidConfiguration(Set<Player> players, Board board);
+    abstract boolean isValidConfiguration(List<Player> players, Board board);
 
-    abstract Player setActivePlayer();
+    protected abstract Player nextPlayer();
 
     private boolean isActivePlayerValid() {
         return players.contains(activePlayer);
     }
 
-    abstract Round<T> createNewRound();
+    protected final Round<T> createNexRound() {
+        setActivePlayer(nextPlayer());
+        return doCreateNewRound();
+    }
+
+    protected abstract Round<T> doCreateNewRound();
+
 
 }
