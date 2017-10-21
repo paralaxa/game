@@ -12,35 +12,31 @@ import java.util.List;
 public abstract class Game<T extends Serializable> extends BaseIdentifiableEntity {
     private Board board;
     private List<Player> players;
-    private Player activePlayer;
     private boolean initialized;
+    private Round<T> activeRound;
 
-    public void startGame(Board board, List<Player> players, Player activePlayer) {
+    public Round startGame(Board board, List<Player> players, Player activePlayer) {
         if (isValidConfiguration(players, board)) {
-            nextPlayer();
-            if (isActivePlayerValid()) {
-                this.board = board;
-                this.players = players;
-                this.activePlayer = activePlayer;
-                initialized = true;
-            }
+            this.board = board;
+            this.players = players;
+            initialized = true;
         }
+        return doCreateNewRound(nextPlayer());
     }
 
     abstract boolean isValidConfiguration(List<Player> players, Board board);
 
     protected abstract Player nextPlayer();
 
-    private boolean isActivePlayerValid() {
-        return players.contains(activePlayer);
-    }
 
     protected final Round<T> createNexRound() {
-        setActivePlayer(nextPlayer());
-        return doCreateNewRound();
+        return doCreateNewRound(nextPlayer());
     }
 
-    protected abstract Round<T> doCreateNewRound();
+    protected abstract Round<T> doCreateNewRound(Player nextPlayer);
 
+    public void commitRound() {
+        activeRound.getPlayer().doMove(board, activeRound.getMovement());
+    }
 
 }

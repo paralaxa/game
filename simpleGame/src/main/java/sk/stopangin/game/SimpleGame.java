@@ -28,7 +28,7 @@ public class SimpleGame extends Game<Integer> {
 
     @Override
     protected Player nextPlayer() {
-        int activePlayerIndex = getPlayers().indexOf(getActivePlayer());
+        int activePlayerIndex = getPlayers().indexOf(getActiveRound().getPlayer());
         int nextPlayerIndex = 0;
         if (activePlayerIndex != getPlayers().size() - 1) {
             nextPlayerIndex = activePlayerIndex + 1;
@@ -37,10 +37,8 @@ public class SimpleGame extends Game<Integer> {
     }
 
     @Override
-    protected Round<Integer> doCreateNewRound() {
-        setActivePlayer(nextPlayer());
-        return new Round<>(getActivePlayer(), LocalTime.now(), cubeThrowRoundDataGenerator.generate(), RoundState.NEW);
+    protected Round<Integer> doCreateNewRound(Player player) {
+        return new Round<>(nextPlayer(), LocalTime.now(), cubeThrowRoundDataGenerator.generate(), RoundState.NEW);
     }
-
 
 }

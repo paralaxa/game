@@ -35,6 +35,7 @@ public class GameService {
         players.addAll(Arrays.asList(p1, p2));
 
         game.startGame(board, players, p1);
+
         return game;
     }
 }

@@ -16,6 +16,6 @@ public class RandomSimpleGameBoardGenerator {
             Field field = new RegularField();
             fields.add(field);
         }
-        return SimpleBoard.builder().fields(fields).build();
+        return new SimpleBoard(fields);
     }
 }

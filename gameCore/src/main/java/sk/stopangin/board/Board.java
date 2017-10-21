@@ -7,11 +7,13 @@ import sk.stopangin.movement.MovementStatus;
 
 import java.util.Set;
 
-@Builder
+
 public abstract class Board {
     private Set<Field> fields;
 
-    public abstract void initialize(Set<Field> fields);
+    public Board(Set<Field> fields) {
+        this.fields = fields;
+    }
 
     public MovementStatus updateBasedOnMovement(Movement movement) {
         if (isMoveOutOfBoundaries(movement)) {

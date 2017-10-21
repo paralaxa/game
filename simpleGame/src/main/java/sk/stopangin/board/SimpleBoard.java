@@ -7,10 +7,10 @@ import java.util.Set;
 
 public class SimpleBoard extends LinearBoard {
 
-    @Override
-    public void initialize(Set<Field> fields) {
-
+    public SimpleBoard(Set<Field> fields) {
+        super(fields);
     }
+
 
     @Override
     protected boolean isMovementCollision(Movement movement) {

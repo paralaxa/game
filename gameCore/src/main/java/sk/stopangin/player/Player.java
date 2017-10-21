@@ -27,7 +27,7 @@ public abstract class Player extends BaseIdentifiableEntity {
         return pieces.contains(piece);
     }
 
-    public abstract void doMovement(Board board, Movement movement);
+    protected abstract void doMovement(Board board, Movement movement);
 
 
 }
