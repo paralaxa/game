@@ -14,17 +14,19 @@ public abstract class Player extends BaseIdentifiableEntity {
     private Set<Piece> pieces;
 
     public void doMove(Board board, Movement movement) {
-        canMovePiece(board, movement);
-    }
-
-    private void canMovePiece(Board board, Movement movement) {
         if (isThisMinePiece(movement.getPiece())) {
             doMovement(board, movement);
         }
     }
 
+
     private boolean isThisMinePiece(Piece piece) {
-        return pieces.contains(piece);
+        for (Piece myPiece : pieces) {
+            if (myPiece.getId().equals(piece.getId())) {
+                return true;
+            }
+        }
+        return false;
     }
 
     protected abstract void doMovement(Board board, Movement movement);

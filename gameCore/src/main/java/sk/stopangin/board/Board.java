@@ -1,6 +1,5 @@
 package sk.stopangin.board;
 
-import lombok.Builder;
 import sk.stopangin.field.Field;
 import sk.stopangin.movement.Movement;
 import sk.stopangin.movement.MovementStatus;

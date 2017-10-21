@@ -6,5 +6,5 @@ import java.util.Set;
 
 //definuje sposob pohybu (napr sikmo, rovno, do L...)
 public interface MovementType<T> {
-    Set<Coordinates<T>> getPossibleCoordinatesForPiece(Piece piece);
+    boolean isMatch(Coordinates<Integer> currentCoordinates,Coordinates<Integer> newCoordinates);
 }
