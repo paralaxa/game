@@ -15,7 +15,7 @@ public abstract class Game<T extends Serializable> extends BaseIdentifiableEntit
     private Player activePlayer;
     private boolean initialized;
 
-    public void initialize(Board board, List<Player> players, Player activePlayer) {
+    public void startGame(Board board, List<Player> players, Player activePlayer) {
         if (isValidConfiguration(players, board)) {
             nextPlayer();
             if (isActivePlayerValid()) {
@@ -24,12 +24,6 @@ public abstract class Game<T extends Serializable> extends BaseIdentifiableEntit
                 this.activePlayer = activePlayer;
                 initialized = true;
             }
-        }
-    }
-
-    public void startGame() {
-        if (!initialized) {
-            throw new GameException("Game not initialized");
         }
     }
 

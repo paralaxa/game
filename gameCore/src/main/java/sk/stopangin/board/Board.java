@@ -1,13 +1,13 @@
 package sk.stopangin.board;
 
-import lombok.Data;
+import lombok.Builder;
 import sk.stopangin.field.Field;
 import sk.stopangin.movement.Movement;
 import sk.stopangin.movement.MovementStatus;
 
 import java.util.Set;
 
-@Data
+@Builder
 public abstract class Board {
     private Set<Field> fields;
 
