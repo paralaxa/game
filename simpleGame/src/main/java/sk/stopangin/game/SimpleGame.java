@@ -1,18 +1,41 @@
 package sk.stopangin.game;
 
 import sk.stopangin.board.Board;
+import sk.stopangin.board.RandomSimpleGameBoardGenerator;
 import sk.stopangin.board.SimpleBoard;
 import sk.stopangin.movement.LinearCoordinates;
 import sk.stopangin.movement.Movement;
+import sk.stopangin.piece.LinearMovingPiece;
+import sk.stopangin.piece.Piece;
 import sk.stopangin.player.Player;
 
 import java.time.LocalTime;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class SimpleGame extends Game<Integer> {
 
 
     private CubeThrowRoundDataGenerator cubeThrowRoundDataGenerator = new CubeThrowRoundDataGenerator(6);
+
+    public Round<Integer> startGame(List<Player> players) {
+        enrichPlayersWithPieces(players);
+        return super.startGame(RandomSimpleGameBoardGenerator.generate(), players, players.get(0));
+    }
+
+    private void enrichPlayersWithPieces(List<Player> players) {
+        long iter=0;
+        for (Player player : players) {
+            player.setId(iter);
+            Piece piece = new LinearMovingPiece(player.getName() + "_piece");
+            piece.setId(player.getId());
+            Set<Piece> pieces1 = new HashSet<>();
+            pieces1.add(piece);
+            player.setPieces(pieces1);
+            iter++;
+        }
+    }
 
     @Override
     boolean isValidConfiguration(List<Player> players, Board board) {

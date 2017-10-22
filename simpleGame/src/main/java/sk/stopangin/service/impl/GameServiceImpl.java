@@ -2,6 +2,7 @@ package sk.stopangin.service.impl;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import sk.stopangin.board.Board;
 import sk.stopangin.board.RandomSimpleGameBoardGenerator;
@@ -15,18 +16,20 @@ import sk.stopangin.piece.LinearMovingPiece;
 import sk.stopangin.piece.Piece;
 import sk.stopangin.player.HumanPlayer;
 import sk.stopangin.player.Player;
+import sk.stopangin.repository.GameRepository;
 import sk.stopangin.service.GameService;
 
 import java.util.*;
 
 @Component
 public class GameServiceImpl implements GameService {
-   private static final Logger log = LoggerFactory.getLogger(GameServiceImpl.class);
+    private static final Logger log = LoggerFactory.getLogger(GameServiceImpl.class);
 
-    //    private GameRepository gameRepository;
+    @Autowired
+    private GameRepository gameRepository;
 
     public Game startGame() {
-        Game<Integer> game = new SimpleGame();
+        SimpleGame game = new SimpleGame();
         Board board = RandomSimpleGameBoardGenerator.generate();
         List<Player> players = new ArrayList<>();
 
@@ -35,29 +38,29 @@ public class GameServiceImpl implements GameService {
 
         Player p1 = new HumanPlayer();//todo zjednodusit, aby vstup na vytvorenie playera bol len playername
         p1.setName("Player1");
-        Piece piece1 = new LinearMovingPiece("p1");
-        piece1.setId(1l);
-        Set<Piece> pieces1 = new HashSet<>();
-        pieces1.add(piece1);
-        p1.setPieces(pieces1);
+//        Piece piece1 = new LinearMovingPiece("p1");
+//        piece1.setId(1l);
+//        Set<Piece> pieces1 = new HashSet<>();
+//        pieces1.add(piece1);
+//        p1.setPieces(pieces1);
 
         Player p2 = new HumanPlayer();
         p2.setName("Player2");
-        Piece piece2 = new LinearMovingPiece("p2");
-        Set<Piece> pieces2 = new HashSet<>();
-        piece2.setId(2l);
-        pieces2.add(piece2);
-        p2.setPieces(pieces2);
+//        Piece piece2 = new LinearMovingPiece("p2");
+//        Set<Piece> pieces2 = new HashSet<>();
+//        piece2.setId(2l);
+//        pieces2.add(piece2);
+//        p2.setPieces(pieces2);
 
         players.addAll(Arrays.asList(p1, p2));
 
-        game.startGame(board, players, p1);
+        game.startGame(players);
         return game;
     }
 
 
     public Round<Integer> commitRound(Game game) {
-        Movement<Integer> movement = getIntegerMovement(1l);
+        Movement<Integer> movement = getIntegerMovement(0l);
         return game.commitRound(movement);
     }
 
@@ -66,10 +69,10 @@ public class GameServiceImpl implements GameService {
         Game game = gameService.startGame(); //ziskat z game repo
 
         Round<Integer> newRound = gameService.commitRound(game);
-        log.debug(newRound.toString());
+        log.debug("new round{}", newRound);
 
         Round<Integer> newRound2 = gameService.commitRound(game);
-        log.debug(newRound2.toString());
+        log.debug("new round2{}", newRound2);
 
     }
 

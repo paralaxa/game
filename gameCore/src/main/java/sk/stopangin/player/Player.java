@@ -30,7 +30,7 @@ public abstract class Player extends BaseIdentifiableEntity {
                 return myPiece;
             }
         }
-        throw new PlayerExcpetion("No piece with id:" + pieceId + " for player" + name);
+        throw new PlayerExcpetion("No piece with id:" + pieceId + " for player:" + name);
     }
 
     protected abstract MovementStatus doMovement(Board board, Movement movement);
