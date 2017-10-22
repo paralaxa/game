@@ -5,7 +5,6 @@ import org.slf4j.LoggerFactory;
 import sk.stopangin.board.Board;
 import sk.stopangin.board.RandomSimpleGameBoardGenerator;
 import sk.stopangin.board.SimpleBoard;
-import sk.stopangin.field.Field;
 import sk.stopangin.movement.Coordinates;
 import sk.stopangin.movement.LinearCoordinates;
 import sk.stopangin.movement.Movement;
@@ -73,16 +72,9 @@ public class SimpleGame extends Game<Integer> {
         return integerRound;
     }
 
-    //todo presunut do boardu (get position for field)
     private Coordinates<Integer> getCurrentPlayesPiecePosition() {
         Piece<Integer> currentPiece = getActiveRound().getPlayer().getPieces().iterator().next();
-        Set<Field<Integer>> fields = getBoard().getFields();
-        for (Field<Integer> field : fields) {
-            if (field.getPiece() != null && field.getPiece().getId().equals(currentPiece.getId())) {
-                return field.getPosition();
-            }
-        }
-        return new Coordinates<>(0);
+        return getBoard().getCoordinatesForPieceId(currentPiece.getId());
     }
 
     @Override

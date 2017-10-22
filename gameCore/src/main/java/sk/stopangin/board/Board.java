@@ -7,6 +7,7 @@ import sk.stopangin.movement.Movement;
 import sk.stopangin.movement.MovementStatus;
 import sk.stopangin.movement.MovementType;
 import sk.stopangin.piece.Piece;
+import sk.stopangin.player.Player;
 
 import java.util.Set;
 
@@ -78,4 +79,6 @@ public abstract class Board<T> {
     protected abstract boolean isMoveOutOfBoundaries(Movement<T> movement);
 
     protected abstract boolean isMovementCollision(Movement<T> movement);
+
+    public abstract Coordinates<Integer> getCoordinatesForPieceId(Long pieceId);
 }
