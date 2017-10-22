@@ -2,6 +2,8 @@ package sk.stopangin.game;
 
 import sk.stopangin.board.Board;
 import sk.stopangin.board.SimpleBoard;
+import sk.stopangin.movement.LinearCoordinates;
+import sk.stopangin.movement.Movement;
 import sk.stopangin.player.Player;
 
 import java.time.LocalTime;
@@ -37,11 +39,16 @@ public class SimpleGame extends Game<Integer> {
     }
 
     @Override
-    public Round<Integer> doCreateNewRound(Player player) {
-        Round<Integer> round = new Round<>(player, LocalTime.now(), cubeThrowRoundDataGenerator.generate(), RoundState.NEW);
+    public Round<Integer> commitRound(Movement<Integer> movement) {
+        movement.setNewPocition(new LinearCoordinates(getActiveRound().getData()));
+        return super.commitRound(movement);
+    }
+
+    @Override
+    protected Round<Integer> doCreateNewRound(Player player) {
+        Round<Integer> round = new Round<>(player, LocalTime.now(), cubeThrowRoundDataGenerator.generate());
         setActiveRound(round);
         return round;
-
     }
 
 }

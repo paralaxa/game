@@ -1,20 +1,23 @@
-package sk.stopangin.service;
+package sk.stopangin.service.impl;
 
 import sk.stopangin.board.Board;
 import sk.stopangin.board.RandomSimpleGameBoardGenerator;
 import sk.stopangin.game.Game;
 import sk.stopangin.game.Round;
 import sk.stopangin.game.SimpleGame;
-import sk.stopangin.movement.*;
+import sk.stopangin.movement.LinearCoordinates;
+import sk.stopangin.movement.LinearMovementType;
+import sk.stopangin.movement.Movement;
+import sk.stopangin.movement.MovementType;
 import sk.stopangin.piece.LinearMovingPiece;
 import sk.stopangin.piece.Piece;
 import sk.stopangin.player.HumanPlayer;
 import sk.stopangin.player.Player;
+import sk.stopangin.service.GameService;
 
 import java.util.*;
 
-//todo into api module
-public class GameService {
+public class GameServiceImpl implements GameService {
     //    private GameRepository gameRepository;
 
     public Game startGame() {
@@ -25,7 +28,7 @@ public class GameService {
         Set<MovementType> movementTypes = new HashSet<>();
         movementTypes.add(new LinearMovementType());
 
-        Player p1 = new HumanPlayer();
+        Player p1 = new HumanPlayer();//todo zjednodusit, aby vstup na vytvorenie playera bol len playername
         p1.setName("Player1");
         Piece piece1 = new LinearMovingPiece("p1", new LinearCoordinates(0), movementTypes);
         piece1.setId(1l);
@@ -47,26 +50,31 @@ public class GameService {
         return game;
     }
 
-    public Round<Integer> createNextRound(Game game) {
-        return game.createNexRound();
-    }
 
-    public void commitRound(Game game, Movement<Integer> movement) {
-        game.commitRound(movement);
-        game.createNexRound();
+    public Round<Integer> commitRound(Game game) {
+        Movement<Integer> movement = getIntegerMovement(1l);
+        return game.commitRound(movement);
     }
 
     public static void main(String[] args) {
-        GameService gameService = new GameService();
+        GameServiceImpl gameService = new GameServiceImpl();
         Game game = gameService.startGame(); //ziskat z game repo
-        gameService.createNextRound(game);
+
+        Round<Integer> newRound = gameService.commitRound(game);
+        System.out.println(newRound);
+
+        Round<Integer> newRound2 = gameService.commitRound(game);
+        System.out.println(newRound2);
+
+    }
+
+    private static Movement<Integer> getIntegerMovement(Long pieceId) {
         Movement<Integer> movement = new Movement<>();
-        movement.setNewPocition(new LinearCoordinates(3));
         movement.setMovementType(new LinearMovementType());
         Piece p = new LinearMovingPiece();
-        p.setId(1l);
+        p.setId(pieceId);
         movement.setPiece(p);
-        gameService.commitRound(game, movement);
+        return movement;
     }
 
 }

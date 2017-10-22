@@ -9,6 +9,7 @@
     <modules>
         <module>gameCore</module>
 		<module>simpleGame</module>
+		<module>gameApi</module>
 	</modules>
     <packaging>pom</packaging>
 

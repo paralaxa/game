@@ -14,18 +14,10 @@ import java.util.Set;
 @AllArgsConstructor
 public abstract class Piece extends BaseIdentifiableEntity {
     private String name;
-    private Coordinates actualPosition;
     private Set<MovementType> movementTypes;
 
     public Piece() {
     }
 
-    public boolean isValidMove(Coordinates coordinates) {
-        for (MovementType movementType : movementTypes) {
-            if (movementType.isMatch(actualPosition, coordinates)) {
-                return true;
-            }
-        }
-        return false;
-    }
+
 }

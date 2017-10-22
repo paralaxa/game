@@ -4,6 +4,7 @@ import lombok.Data;
 import sk.stopangin.board.Board;
 import sk.stopangin.entity.BaseIdentifiableEntity;
 import sk.stopangin.movement.Movement;
+import sk.stopangin.movement.MovementStatus;
 import sk.stopangin.piece.Piece;
 
 import java.util.Set;
@@ -13,23 +14,26 @@ public abstract class Player extends BaseIdentifiableEntity {
     private String name;
     private Set<Piece> pieces;
 
-    public void doMove(Board board, Movement movement) {
-        if (isThisMinePiece(movement.getPiece())) {
-            doMovement(board, movement);
-        }
+    public MovementStatus doMove(Board board, Movement movement) {
+        updateMovementWithMyPiece(movement);
+        return doMovement(board, movement);
+    }
+
+    private void updateMovementWithMyPiece(Movement movement) {
+        movement.setPiece(getMyPieceForId(movement.getPiece().getId()));
     }
 
 
-    private boolean isThisMinePiece(Piece piece) {
+    private Piece getMyPieceForId(Long pieceId) {
         for (Piece myPiece : pieces) {
-            if (myPiece.getId().equals(piece.getId())) {
-                return true;
+            if (myPiece.getId().equals(pieceId)) {
+                return myPiece;
             }
         }
-        return false;
+        throw new PlayerExcpetion("No piece with id:" + pieceId + " for player" + name);
     }
 
-    protected abstract void doMovement(Board board, Movement movement);
+    protected abstract MovementStatus doMovement(Board board, Movement movement);
 
 
 }

@@ -14,7 +14,7 @@ public class SimpleBoard extends LinearBoard {
 
     @Override
     protected boolean isMovementCollision(Movement movement) {
-        return false;
+        return true;
     }
 
     @Override

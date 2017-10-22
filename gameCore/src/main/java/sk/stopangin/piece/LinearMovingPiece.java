@@ -12,6 +12,6 @@ public class LinearMovingPiece extends Piece {
     }
 
     public LinearMovingPiece(String name, Coordinates actualPosition, Set<MovementType> movementTypes) {
-        super(name, actualPosition, movementTypes);
+        super(name, movementTypes);
     }
 }

@@ -4,6 +4,7 @@ import lombok.Data;
 import sk.stopangin.board.Board;
 import sk.stopangin.entity.BaseIdentifiableEntity;
 import sk.stopangin.movement.Movement;
+import sk.stopangin.movement.MovementStatus;
 import sk.stopangin.player.Player;
 
 import java.io.Serializable;
@@ -30,18 +31,23 @@ public abstract class Game<T extends Serializable> extends BaseIdentifiableEntit
 
     protected abstract Player nextPlayer();
 
-
-    public final Round<T> createNexRound() {
-        return doCreateNewRound(nextPlayer());
+    protected final Round<T> createNexRound() {
+        Round<T> newRound = doCreateNewRound(nextPlayer());
+        newRound.setRoundStatus(new RoundStatus(RoundState.NEW));
+        return newRound;
     }
 
     protected abstract Round<T> doCreateNewRound(Player nextPlayer);
 
     public Round<T> commitRound(Movement<T> movement) {
         activeRound.setMovement(movement);
+        MovementStatus movementStatus = activeRound.getPlayer().doMove(board, movement);
+        if (!MovementStatus.DONE.equals(movementStatus)) {
+            activeRound.setRoundStatus(new RoundStatus(RoundState.IN_PROGRESS, movementStatus));
+            return activeRound;
+        }
         activeRound.setRoundEnd(LocalTime.now());
-        activeRound.getPlayer().doMove(board, movement);
-        activeRound.setRoundState(RoundState.FINISHED);
+        activeRound = createNexRound();//todo commit active round into repository
         return activeRound;
     }
 

@@ -10,7 +10,6 @@ import java.io.Serializable;
 import java.time.LocalTime;
 
 @Data
-@RequiredArgsConstructor
 public class Round<T extends Serializable> {
     private Movement movement;
     @NonNull
@@ -19,7 +18,14 @@ public class Round<T extends Serializable> {
     private final LocalTime roundStart;
     private LocalTime roundEnd;
     @NonNull
-    private final T data;
+    private final T data; //hod kockou napr.
     @NonNull
-    private RoundState roundState;
+    private RoundStatus roundStatus;
+
+    public Round(Player player, LocalTime roundStart, T data) {
+        this.player = player;
+        this.roundStart = roundStart;
+        this.data = data;
+        this.roundStatus = new RoundStatus(RoundState.NEW);
+    }
 }
