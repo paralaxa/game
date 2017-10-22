@@ -16,6 +16,7 @@ import sk.stopangin.piece.LinearMovingPiece;
 import sk.stopangin.piece.Piece;
 import sk.stopangin.player.HumanPlayer;
 import sk.stopangin.player.Player;
+import sk.stopangin.player.SimpleHumanPlayer;
 import sk.stopangin.repository.GameRepository;
 import sk.stopangin.service.GameService;
 
@@ -30,27 +31,16 @@ public class GameServiceImpl implements GameService {
 
     public Game startGame() {
         SimpleGame game = new SimpleGame();
-        Board board = RandomSimpleGameBoardGenerator.generate();
         List<Player> players = new ArrayList<>();
 
         Set<MovementType> movementTypes = new HashSet<>();
         movementTypes.add(new LinearMovementType());
 
-        Player p1 = new HumanPlayer();//todo zjednodusit, aby vstup na vytvorenie playera bol len playername
+        Player<Integer> p1 = new SimpleHumanPlayer();
         p1.setName("Player1");
-//        Piece piece1 = new LinearMovingPiece("p1");
-//        piece1.setId(1l);
-//        Set<Piece> pieces1 = new HashSet<>();
-//        pieces1.add(piece1);
-//        p1.setPieces(pieces1);
 
-        Player p2 = new HumanPlayer();
+        Player<Integer> p2 = new SimpleHumanPlayer();
         p2.setName("Player2");
-//        Piece piece2 = new LinearMovingPiece("p2");
-//        Set<Piece> pieces2 = new HashSet<>();
-//        piece2.setId(2l);
-//        pieces2.add(piece2);
-//        p2.setPieces(pieces2);
 
         players.addAll(Arrays.asList(p1, p2));
 
@@ -60,28 +50,26 @@ public class GameServiceImpl implements GameService {
 
 
     public Round<Integer> commitRound(Game game) {
-        Movement<Integer> movement = getIntegerMovement(0l);
-        return game.commitRound(movement);
+        return game.commitRound(new Movement<>());
     }
 
     public static void main(String[] args) {
-        GameServiceImpl gameService = new GameServiceImpl();
+        GameServiceImpl gameService = new GameServiceImpl(); //TODO inst oproti Game interfaceu, salt riesit tu.
         Game game = gameService.startGame(); //ziskat z game repo
 
         Round<Integer> newRound = gameService.commitRound(game);
-        log.debug("new round{}", newRound);
+        log.debug("new round {}", newRound);
 
         Round<Integer> newRound2 = gameService.commitRound(game);
-        log.debug("new round2{}", newRound2);
+        log.debug("new round2 {}", newRound2);
+
+        Round<Integer> newRound3 = gameService.commitRound(game);
+        log.debug("new round3 {}", newRound3);
+
+        Round<Integer> newRound4 = gameService.commitRound(game);
+        log.debug("new round4 {}", newRound4);
 
     }
 
-    private static Movement<Integer> getIntegerMovement(Long pieceId) {
-        Movement<Integer> movement = new Movement<>();
-        Piece p = new LinearMovingPiece("");
-        p.setId(pieceId);
-        movement.setPiece(p);
-        return movement;
-    }
 
 }

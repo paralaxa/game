@@ -5,19 +5,10 @@ import sk.stopangin.movement.Movement;
 
 import java.util.Set;
 
-public abstract class LinearBoard extends Board {
-    public LinearBoard(Set<Field> fields) {
+public abstract class LinearBoard extends Board<Integer> {
+    public LinearBoard(Set<Field<Integer>> fields) {
         super(fields);
     }
 
 
-    @Override
-    protected boolean isMoveOutOfBoundaries(Movement movement) {
-        return false;
-    }
-
-    @Override
-    protected boolean isMovementCollision(Movement movement) {
-        return false;
-    }
 }

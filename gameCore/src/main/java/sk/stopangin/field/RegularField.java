@@ -1,4 +1,4 @@
 package sk.stopangin.field;
 
-public class RegularField extends Field {
+public class RegularField extends Field<Integer> {
 }

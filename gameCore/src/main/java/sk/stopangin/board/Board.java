@@ -1,5 +1,6 @@
 package sk.stopangin.board;
 
+import lombok.Data;
 import sk.stopangin.field.Field;
 import sk.stopangin.movement.Coordinates;
 import sk.stopangin.movement.Movement;
@@ -9,7 +10,7 @@ import sk.stopangin.piece.Piece;
 
 import java.util.Set;
 
-
+@Data
 public abstract class Board<T> {
     private Set<Field<T>> fields;
 
@@ -17,7 +18,7 @@ public abstract class Board<T> {
         this.fields = fields;
     }
 
-    public MovementStatus updateBasedOnMovement(Movement movement) {
+    public MovementStatus updateBasedOnMovement(Movement<T> movement) {
         if (isMoveOutOfBoundaries(movement)) {
             return MovementStatus.OUT_OF_BOUNDARIES;
         }
@@ -27,7 +28,7 @@ public abstract class Board<T> {
         return updateBoard(movement);
     }
 
-    private MovementStatus updateBoard(Movement movement) {
+    private MovementStatus updateBoard(Movement<T> movement) {
         for (Field<T> field : fields) {
             Piece currentMovementPiece = movement.getPiece();
             if (isPieceOnField(field, currentMovementPiece)) {
@@ -52,7 +53,7 @@ public abstract class Board<T> {
         }
     }
 
-    private void removePieceFromPield(Field field) {
+    private void removePieceFromPield(Field<T> field) {
         field.setPiece(null);
     }
 
@@ -65,7 +66,7 @@ public abstract class Board<T> {
         return true;
     }
 
-    private boolean isValidMove(Movement<T> movement, Coordinates actualPosition, Coordinates newCoordinates) {
+    private boolean isValidMove(Movement<T> movement, Coordinates<T> actualPosition, Coordinates<T> newCoordinates) {
         for (MovementType movementType : movement.getPiece().getMovementTypes()) {
             if (movementType.isMatch(actualPosition, newCoordinates)) {
                 return true;
@@ -74,7 +75,7 @@ public abstract class Board<T> {
         return false;
     }
 
-    protected abstract boolean isMoveOutOfBoundaries(Movement movement);
+    protected abstract boolean isMoveOutOfBoundaries(Movement<T> movement);
 
-    protected abstract boolean isMovementCollision(Movement movement);
+    protected abstract boolean isMovementCollision(Movement<T> movement);
 }

@@ -4,10 +4,10 @@ import sk.stopangin.board.Board;
 import sk.stopangin.movement.Movement;
 import sk.stopangin.movement.MovementStatus;
 
-public class HumanPlayer extends Player {
-    @
-Override
-    public MovementStatus doMovement(Board board, Movement movement) {
+public class HumanPlayer<T> extends Player<T> {
+
+    @Override
+    public MovementStatus doMovement(Board<T> board, Movement<T> movement) {
         return board.updateBasedOnMovement(movement);
 
     }

@@ -15,9 +15,9 @@ public class RandomSimpleGameBoardGenerator {
 
     public static Board generate() {
 
-        Set<Field> fields = new HashSet<>();
+        Set<Field<Integer>> fields = new HashSet<>();
         for (int i = 0; i < FIELDS_COUNT; i++) {
-            Field field = new RegularField();
+            Field<Integer> field = new RegularField();
             field.setPosition(new Coordinates(i));
             fields.add(field);
         }
