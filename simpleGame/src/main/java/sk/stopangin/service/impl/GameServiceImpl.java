@@ -31,7 +31,7 @@ public class GameServiceImpl implements GameService {
 
     public Game startGame() {
         SimpleGame game = new SimpleGame();
-        List<Player> players = new ArrayList<>();
+        List<Player<Integer>> players = new ArrayList<>();
 
         Set<MovementType> movementTypes = new HashSet<>();
         movementTypes.add(new LinearMovementType());

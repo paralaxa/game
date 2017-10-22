@@ -12,7 +12,7 @@ import java.time.LocalTime;
 public class Round<T extends Serializable> {
     private Movement movement;
     @NonNull
-    private final Player player;
+    private final Player<T> player;
     @NonNull
     private final LocalTime roundStart;
     private LocalTime roundEnd;

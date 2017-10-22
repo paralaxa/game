@@ -13,12 +13,12 @@ import java.util.List;
 
 @Data
 public abstract class Game<T extends Serializable> extends BaseIdentifiableEntity {
-    private Board board;
-    private List<Player> players;
+    private Board<T> board;
+    private List<Player<T>> players;
     private boolean initialized;
     private Round<T> activeRound;
 
-    public Round<T> startGame(Board board, List<Player> players, Player activePlayer) {
+    public Round<T> startGame(Board<T> board, List<Player<T>> players, Player<T> activePlayer) {
         if (isValidConfiguration(players, board)) {
             this.board = board;
             this.players = players;
@@ -27,9 +27,9 @@ public abstract class Game<T extends Serializable> extends BaseIdentifiableEntit
         return doCreateNewRound(activePlayer);
     }
 
-    abstract boolean isValidConfiguration(List<Player> players, Board board);
+    abstract boolean isValidConfiguration(List<Player<T>> players, Board<T> board);
 
-    protected abstract Player nextPlayer();
+    protected abstract Player<T> nextPlayer();
 
     protected final Round<T> createNexRound() {
         Round<T> newRound = doCreateNewRound(nextPlayer());
@@ -37,7 +37,7 @@ public abstract class Game<T extends Serializable> extends BaseIdentifiableEntit
         return newRound;
     }
 
-    protected abstract Round<T> doCreateNewRound(Player nextPlayer);
+    protected abstract Round<T> doCreateNewRound(Player<T> nextPlayer);
 
     public Round<T> commitRound(Movement<T> movement) {
         activeRound.setMovement(movement);
@@ -47,7 +47,7 @@ public abstract class Game<T extends Serializable> extends BaseIdentifiableEntit
             return activeRound;
         }
         activeRound.setRoundEnd(LocalTime.now());
-        activeRound = createNexRound();//todo commit active round into repository
+        activeRound = createNexRound();
         return activeRound;
     }
 
