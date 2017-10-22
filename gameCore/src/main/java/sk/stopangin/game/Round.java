@@ -2,7 +2,6 @@ package sk.stopangin.game;
 
 import lombok.Data;
 import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 import sk.stopangin.movement.Movement;
 import sk.stopangin.player.Player;
 

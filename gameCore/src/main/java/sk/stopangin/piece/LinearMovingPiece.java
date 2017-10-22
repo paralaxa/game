@@ -1,17 +1,16 @@
 package sk.stopangin.piece;
 
-import sk.stopangin.movement.Coordinates;
+import sk.stopangin.movement.LinearMovementType;
 import sk.stopangin.movement.MovementType;
 
+import java.util.HashSet;
 import java.util.Set;
 
-public class LinearMovingPiece extends Piece {
+public class LinearMovingPiece extends Piece<Integer> {
 
 
-    public LinearMovingPiece() {
+    public LinearMovingPiece(String name) {
+        super(name, new LinearMovementType());
     }
 
-    public LinearMovingPiece(String name, Coordinates actualPosition, Set<MovementType> movementTypes) {
-        super(name, movementTypes);
-    }
 }

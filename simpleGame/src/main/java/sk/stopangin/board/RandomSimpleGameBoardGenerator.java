@@ -10,6 +10,9 @@ import java.util.Set;
 public class RandomSimpleGameBoardGenerator {
     private static final int FIELDS_COUNT = 70;
 
+    private RandomSimpleGameBoardGenerator() {
+    }
+
     public static Board generate() {
 
         Set<Field> fields = new HashSet<>();

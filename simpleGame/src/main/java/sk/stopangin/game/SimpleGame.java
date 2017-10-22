@@ -8,7 +8,6 @@ import sk.stopangin.player.Player;
 
 import java.time.LocalTime;
 import java.util.List;
-import java.util.Set;
 
 public class SimpleGame extends Game<Integer> {
 

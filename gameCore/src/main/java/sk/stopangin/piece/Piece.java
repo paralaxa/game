@@ -1,23 +1,21 @@
 package sk.stopangin.piece;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import sk.stopangin.entity.BaseIdentifiableEntity;
-import sk.stopangin.movement.Coordinates;
 import sk.stopangin.movement.MovementType;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.HashSet;
 import java.util.Set;
 
 @Data
-@AllArgsConstructor
-public abstract class Piece extends BaseIdentifiableEntity {
+public abstract class Piece<T> extends BaseIdentifiableEntity {
     private String name;
-    private Set<MovementType> movementTypes;
+    private Set<MovementType<T>> movementTypes = new HashSet<>();
 
-    public Piece() {
+    public Piece(String name, MovementType<T>... varMovementTypes) {
+        this.name = name;
+        for (MovementType<T> varMovementType : varMovementTypes) {
+            movementTypes.add(varMovementType);
+        }
     }
-
-
 }

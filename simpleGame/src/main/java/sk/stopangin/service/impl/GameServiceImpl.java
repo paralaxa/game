@@ -1,11 +1,13 @@
 package sk.stopangin.service.impl;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 import sk.stopangin.board.Board;
 import sk.stopangin.board.RandomSimpleGameBoardGenerator;
 import sk.stopangin.game.Game;
 import sk.stopangin.game.Round;
 import sk.stopangin.game.SimpleGame;
-import sk.stopangin.movement.LinearCoordinates;
 import sk.stopangin.movement.LinearMovementType;
 import sk.stopangin.movement.Movement;
 import sk.stopangin.movement.MovementType;
@@ -17,7 +19,10 @@ import sk.stopangin.service.GameService;
 
 import java.util.*;
 
+@Component
 public class GameServiceImpl implements GameService {
+   private static final Logger log = LoggerFactory.getLogger(GameServiceImpl.class);
+
     //    private GameRepository gameRepository;
 
     public Game startGame() {
@@ -30,7 +35,7 @@ public class GameServiceImpl implements GameService {
 
         Player p1 = new HumanPlayer();//todo zjednodusit, aby vstup na vytvorenie playera bol len playername
         p1.setName("Player1");
-        Piece piece1 = new LinearMovingPiece("p1", new LinearCoordinates(0), movementTypes);
+        Piece piece1 = new LinearMovingPiece("p1");
         piece1.setId(1l);
         Set<Piece> pieces1 = new HashSet<>();
         pieces1.add(piece1);
@@ -38,7 +43,7 @@ public class GameServiceImpl implements GameService {
 
         Player p2 = new HumanPlayer();
         p2.setName("Player2");
-        Piece piece2 = new LinearMovingPiece("p2", new LinearCoordinates(0), movementTypes);
+        Piece piece2 = new LinearMovingPiece("p2");
         Set<Piece> pieces2 = new HashSet<>();
         piece2.setId(2l);
         pieces2.add(piece2);
@@ -61,17 +66,16 @@ public class GameServiceImpl implements GameService {
         Game game = gameService.startGame(); //ziskat z game repo
 
         Round<Integer> newRound = gameService.commitRound(game);
-        System.out.println(newRound);
+        log.debug(newRound.toString());
 
         Round<Integer> newRound2 = gameService.commitRound(game);
-        System.out.println(newRound2);
+        log.debug(newRound2.toString());
 
     }
 
     private static Movement<Integer> getIntegerMovement(Long pieceId) {
         Movement<Integer> movement = new Movement<>();
-        movement.setMovementType(new LinearMovementType());
-        Piece p = new LinearMovingPiece();
+        Piece p = new LinearMovingPiece("");
         p.setId(pieceId);
         movement.setPiece(p);
         return movement;

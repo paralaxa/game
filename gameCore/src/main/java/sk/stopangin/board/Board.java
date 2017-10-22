@@ -10,10 +10,10 @@ import sk.stopangin.piece.Piece;
 import java.util.Set;
 
 
-public abstract class Board {
-    private Set<Field> fields;
+public abstract class Board<T> {
+    private Set<Field<T>> fields;
 
-    public Board(Set<Field> fields) {
+    public Board(Set<Field<T>> fields) {
         this.fields = fields;
     }
 
@@ -28,7 +28,7 @@ public abstract class Board {
     }
 
     private MovementStatus updateBoard(Movement movement) {
-        for (Field field : fields) {
+        for (Field<T> field : fields) {
             Piece currentMovementPiece = movement.getPiece();
             if (isPieceOnField(field, currentMovementPiece)) {
                 if (isValidMove(movement, field.getPosition(), movement.getNewPocition())) {
@@ -56,7 +56,7 @@ public abstract class Board {
         field.setPiece(null);
     }
 
-    protected boolean isEmpty() {
+    protected boolean isEmpty() { //todo implement
         for (Field field : fields) {
             if (field.getPiece() != null) {
                 return false;
@@ -65,7 +65,7 @@ public abstract class Board {
         return true;
     }
 
-    private boolean isValidMove(Movement movement, Coordinates actualPosition, Coordinates newCoordinates) {
+    private boolean isValidMove(Movement<T> movement, Coordinates actualPosition, Coordinates newCoordinates) {
         for (MovementType movementType : movement.getPiece().getMovementTypes()) {
             if (movementType.isMatch(actualPosition, newCoordinates)) {
                 return true;
