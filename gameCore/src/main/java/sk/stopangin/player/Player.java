@@ -22,7 +22,7 @@ public abstract class Player<T> extends BaseIdentifiableEntity {
     private void updateMovementWithMyPiece(Movement<T> movement) {
         Piece<T> currentMovementPiece = movement.getPiece();
         if (pieceNotSpecifiedForMovement(currentMovementPiece)) {
-            if (hasOnlyOnePiece(movement)) {
+            if (hasOnlyOnePiece()) {
                 currentMovementPiece = pieces.iterator().next();
             } else {
                 throw new PlayerExcpetion("Piece not specified for movement");
@@ -35,7 +35,7 @@ public abstract class Player<T> extends BaseIdentifiableEntity {
         return currentMovementPiece== null;
     }
 
-    private boolean hasOnlyOnePiece(Movement<T> movement) {
+    private boolean hasOnlyOnePiece() {
         return pieces.size() == 1;
     }
 

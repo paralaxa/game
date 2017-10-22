@@ -14,12 +14,6 @@ public class SimpleBoard extends LinearBoard {
         super(fields);
     }
 
-
-    @Override
-    protected boolean isMovementCollision(Movement<Integer> movement) {
-        return false;
-    }
-
     @Override
     public boolean isMoveOutOfBoundaries(Movement<Integer> movement) {
         return movement.getNewPocition().getData() > getFields().size();

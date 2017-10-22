@@ -44,6 +44,15 @@ public abstract class Board<T> {
         return MovementStatus.DONE;
     }
 
+    protected Piece<T> getPieceForCoordinates(Coordinates<T> coordinates) {
+        for (Field<T> field : fields) {
+            if (field.getPosition().equals(coordinates)) {
+                return field.getPiece();
+            }
+        }
+        return null;
+    }
+
     private boolean isPieceOnField(Field field, Piece currentMovementPiece) {
         return field.getPiece() != null && field.getPiece().getId().equals(currentMovementPiece.getId());
     }
@@ -78,7 +87,9 @@ public abstract class Board<T> {
 
     protected abstract boolean isMoveOutOfBoundaries(Movement<T> movement);
 
-    protected abstract boolean isMovementCollision(Movement<T> movement);
+    protected boolean isMovementCollision(Movement<T> movement) {
+        return getPieceForCoordinates(movement.getNewPocition()) != null;
+    }
 
     public abstract Coordinates<Integer> getCoordinatesForPieceId(Long pieceId);
 }
