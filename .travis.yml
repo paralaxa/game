@@ -1,3 +1,7 @@
 language: java
 sudo: false
 script: mvn clean verify
+notifications:
+  email:
+    - martin.cuchran@outlook.sk
+    - jan.sedlak@icloud.com
