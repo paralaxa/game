@@ -1,7 +1,5 @@
 package sk.stopangin.resource;
 
-import org.springframework.beans.factory.config.ConfigurableBeanFactory;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
@@ -19,7 +17,6 @@ import javax.ws.rs.core.Response;
  */
 @Component
 @Path("/board")
-@Scope(ConfigurableBeanFactory.SCOPE_SINGLETON)
 public interface BoardResource {
 
     /**
