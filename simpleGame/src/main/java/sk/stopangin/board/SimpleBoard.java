@@ -3,8 +3,6 @@ package sk.stopangin.board;
 import sk.stopangin.field.Field;
 import sk.stopangin.movement.Coordinates;
 import sk.stopangin.movement.Movement;
-import sk.stopangin.piece.Piece;
-import sk.stopangin.player.Player;
 
 import java.util.Set;
 
@@ -16,7 +14,7 @@ public class SimpleBoard extends LinearBoard {
 
     @Override
     public boolean isMoveOutOfBoundaries(Movement<Integer> movement) {
-        return movement.getNewPocition().getData() > getFields().size();
+        return movement.getNewPosition().getData() > getFields().size();
     }
 
     @Override
