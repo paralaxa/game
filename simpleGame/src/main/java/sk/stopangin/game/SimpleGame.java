@@ -66,7 +66,7 @@ public class SimpleGame extends Game<Integer> {
 
     @Override
     public Round<Integer> commitRound(Movement<Integer> movement) {
-        movement.setNewPocition(new LinearCoordinates(getCurrentPlayesPiecePosition().getData() + getActiveRound().getData()));
+        movement.setNewPosition(new LinearCoordinates(getCurrentPlayesPiecePosition().getData() + getActiveRound().getData()));
         Round<Integer> integerRound = super.commitRound(movement);
         log.debug("Board after commit: " + getBoard());
         return integerRound;

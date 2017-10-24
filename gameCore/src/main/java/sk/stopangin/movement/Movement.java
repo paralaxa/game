@@ -6,5 +6,5 @@ import sk.stopangin.piece.Piece;
 @Data
 public class Movement<T> {
     private Piece<T> piece;
-    private Coordinates<T> newPocition;
+    private Coordinates<T> newPosition;
 }

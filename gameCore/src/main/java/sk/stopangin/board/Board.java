@@ -33,7 +33,7 @@ public abstract class Board<T> {
         for (Field<T> field : fields) {
             Piece currentMovementPiece = movement.getPiece();
             if (isPieceOnField(field, currentMovementPiece)) {
-                if (isValidMove(movement, field.getPosition(), movement.getNewPocition())) {
+                if (isValidMove(movement, field.getPosition(), movement.getNewPosition())) {
                     removePieceFromPield(field);
                 } else {
                     return MovementStatus.INVALID_POSITION;
@@ -58,7 +58,7 @@ public abstract class Board<T> {
     }
 
     private void putPieceOnNewField(Movement movement, Field field, Piece currentMovementPiece) {
-        if (field.getPosition().equals(movement.getNewPocition())) {
+        if (field.getPosition().equals(movement.getNewPosition())) {
             field.setPiece(currentMovementPiece);
         }
     }
@@ -88,7 +88,7 @@ public abstract class Board<T> {
     protected abstract boolean isMoveOutOfBoundaries(Movement<T> movement);
 
     protected boolean isMovementCollision(Movement<T> movement) {
-        return getPieceForCoordinates(movement.getNewPocition()) != null;
+        return getPieceForCoordinates(movement.getNewPosition()) != null;
     }
 
     public abstract Coordinates<Integer> getCoordinatesForPieceId(Long pieceId);

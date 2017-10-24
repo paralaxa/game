@@ -4,6 +4,7 @@ import lombok.Data;
 import sk.stopangin.entity.BaseIdentifiableEntity;
 import sk.stopangin.movement.MovementType;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -14,8 +15,6 @@ public abstract class Piece<T> extends BaseIdentifiableEntity {
 
     public Piece(String name, MovementType<T>... varMovementTypes) {
         this.name = name;
-        for (MovementType<T> varMovementType : varMovementTypes) {
-            movementTypes.add(varMovementType);
-        }
+        movementTypes.addAll(Arrays.asList(varMovementTypes));
     }
 }
