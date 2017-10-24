@@ -51,5 +51,19 @@ public abstract class Player<T> extends BaseIdentifiableEntity {
 
     protected abstract MovementStatus doMovement(Board<T> board, Movement<T> movement);
 
+    public String getName() {
+        return name;
+    }
 
+    public void setName(final String name) {
+        this.name = name;
+    }
+
+    public Set<Piece<T>> getPieces() {
+        return pieces;
+    }
+
+    public void setPieces(final Set<Piece<T>> pieces) {
+        this.pieces = pieces;
+    }
 }
