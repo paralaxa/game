@@ -3,9 +3,11 @@ sudo: false
 script: mvn clean verify
 notifications:
   email:
-    - martin.cuchran@outlook.sk
-    - jan.sedlak@icloud.com
-    - gabo.polak@gmail.com
-    - hozza.matus@gmail.com
-on_success: always
-on_failure: always
+    recipients:
+      - martin.cuchran@outlook.sk
+      - jan.sedlak@icloud.com
+      - gabo.polak@gmail.com
+      - hozza.matus@gmail.com
+    on_success: always
+    on_failure: always
+
