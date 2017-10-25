@@ -27,7 +27,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>1.8</java.version>
-		<swagger>2.7.0</swagger>
+		<springfox-swagger2>2.7.0</springfox-swagger2>
 	</properties>
 
 	<dependencies>
@@ -88,13 +88,13 @@
 		<dependency>
 			<groupId>io.springfox</groupId>
 			<artifactId>springfox-swagger-ui</artifactId>
-			<version>${swagger}</version>
+			<version>${springfox-swagger2}</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>io.springfox</groupId>
 			<artifactId>springfox-swagger2</artifactId>
-			<version>${swagger}</version>
+			<version>${springfox-swagger2}</version>
 			<scope>compile</scope>
 		</dependency>
 	</dependencies>
