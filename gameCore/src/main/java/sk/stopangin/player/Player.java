@@ -25,7 +25,7 @@ public abstract class Player<T> extends BaseIdentifiableEntity {
             if (hasOnlyOnePiece()) {
                 currentMovementPiece = pieces.iterator().next();
             } else {
-                throw new PlayerExcpetion("Piece not specified for movement");
+                throw new PlayerException("Piece not specified for movement");
             }
         }
         movement.setPiece(getMyPieceForId(currentMovementPiece.getId()));
@@ -46,7 +46,7 @@ public abstract class Player<T> extends BaseIdentifiableEntity {
                 return myPiece;
             }
         }
-        throw new PlayerExcpetion("No piece with id:" + pieceId + " for player:" + name);
+        throw new PlayerException("No piece with id:" + pieceId + " for player:" + name);
     }
 
     protected abstract MovementStatus doMovement(Board<T> board, Movement<T> movement);
