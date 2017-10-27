@@ -9,19 +9,19 @@ import java.io.Serializable;
 import java.time.LocalTime;
 
 @Data
-public class Round<T extends Serializable> {
-    private Movement movement;
+public class Round<T extends Serializable,R> {
+    private Movement<T> movement;
     @NonNull
     private final Player<T> player;
     @NonNull
     private final LocalTime roundStart;
     private LocalTime roundEnd;
     @NonNull
-    private final T data; //hod kockou napr.
+    private final R data; //hod kockou napr.
     @NonNull
     private RoundStatus roundStatus;
 
-    public Round(Player player, LocalTime roundStart, T data) {
+    public Round(Player<T> player, LocalTime roundStart, R data) {
         this.player = player;
         this.roundStart = roundStart;
         this.data = data;

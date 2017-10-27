@@ -1,6 +1,12 @@
 package sk.stopangin.field;
 
-@FunctionalInterface
-public interface Action {
-    void perform();
+import sk.stopangin.game.Game;
+
+import java.io.Serializable;
+
+public interface Action<A extends Serializable> {
+
+    <T extends Serializable, R> A perform(Game<T, R> game);
+
+    <T extends Serializable, R> A perform(Game<T, R> game, String data);
 }

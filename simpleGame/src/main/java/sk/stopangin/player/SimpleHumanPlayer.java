@@ -1,4 +1,6 @@
 package sk.stopangin.player;
 
-public class SimpleHumanPlayer extends HumanPlayer<Integer> {
+import sk.stopangin.movement.TwoDimensionalCoordinatesData;
+
+public class SimpleHumanPlayer extends HumanPlayer<TwoDimensionalCoordinatesData> {
 }

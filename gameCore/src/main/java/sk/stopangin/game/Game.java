@@ -11,14 +11,20 @@ import java.io.Serializable;
 import java.time.LocalTime;
 import java.util.List;
 
+/**
+ * Basic game class.
+ *
+ * @param <T>  {@link sk.stopangin.movement.Coordinates} data
+ * @param <R>  {@link Round} data
+ */
 @Data
-public abstract class Game<T extends Serializable> extends BaseIdentifiableEntity {
+public abstract class Game<T extends Serializable,R> extends BaseIdentifiableEntity {
     private Board<T> board;
     private List<Player<T>> players;
     private boolean initialized;
-    private Round<T> activeRound;
+    private Round<T, R> activeRound;
 
-    public Round<T> startGame(Board<T> board, List<Player<T>> players, Player<T> activePlayer) {
+    public Round<T, R> startGame(Board<T> board, List<Player<T>> players, Player<T> activePlayer) {
         if (isValidConfiguration(players, board)) {
             this.board = board;
             this.players = players;
@@ -31,15 +37,15 @@ public abstract class Game<T extends Serializable> extends BaseIdentifiableEntit
 
     protected abstract Player<T> nextPlayer();
 
-    protected final Round<T> createNexRound() {
-        Round<T> newRound = doCreateNewRound(nextPlayer());
+    protected final Round<T, R> createNexRound() {
+        Round<T, R> newRound = doCreateNewRound(nextPlayer());
         newRound.setRoundStatus(new RoundStatus(RoundState.NEW));
         return newRound;
     }
 
-    protected abstract Round<T> doCreateNewRound(Player<T> nextPlayer);
+    protected abstract Round<T, R> doCreateNewRound(Player<T> nextPlayer);
 
-    public Round<T> commitRound(Movement<T> movement) {
+    public Round<T, R> commitRound(Movement<T> movement) {
         activeRound.setMovement(movement);
         MovementStatus movementStatus = activeRound.getPlayer().doMove(board, movement);
         if (!MovementStatus.DONE.equals(movementStatus)) {

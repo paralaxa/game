@@ -7,10 +7,11 @@ import sk.stopangin.movement.Movement;
 import sk.stopangin.movement.MovementStatus;
 import sk.stopangin.piece.Piece;
 
+import java.io.Serializable;
 import java.util.Set;
 
 @Data
-public abstract class Player<T> extends BaseIdentifiableEntity {
+public abstract class Player<T extends Serializable> extends BaseIdentifiableEntity {
     private String name;
     private Set<Piece<T>> pieces;
 
@@ -20,19 +21,25 @@ public abstract class Player<T> extends BaseIdentifiableEntity {
     }
 
     private void updateMovementWithMyPiece(Movement<T> movement) {
-        Piece<T> currentMovementPiece = movement.getPiece();
-        if (pieceNotSpecifiedForMovement(currentMovementPiece)) {
-            if (hasOnlyOnePiece()) {
-                currentMovementPiece = pieces.iterator().next();
-            } else {
-                throw new PlayerException("Piece not specified for movement");
-            }
+        Long currentMovementPieceId = movement.getPieceId();
+        if (pieceNotSpecifiedForMovement(currentMovementPieceId) && hasOnlyOnePiece()) {
+            currentMovementPieceId = getPlayersOnlyPiece().getId();
+        } else {
+            throw new PlayerException("Piece not specified for movement");
         }
-        movement.setPiece(getMyPieceForId(currentMovementPiece.getId()));
+        if (hasPieceWithId(currentMovementPieceId)) {
+            movement.setPieceId(currentMovementPieceId);
+        } else {
+            throw new PlayerException("No piece with id:" + currentMovementPieceId + " for player:" + name);
+        }
     }
 
-    private boolean pieceNotSpecifiedForMovement(Piece<T> currentMovementPiece) {
-        return currentMovementPiece== null;
+    private Piece<T> getPlayersOnlyPiece() {
+        return pieces.iterator().next();
+    }
+
+    private boolean pieceNotSpecifiedForMovement(Long currentMovementPieceId) {
+        return currentMovementPieceId == null;
     }
 
     private boolean hasOnlyOnePiece() {
@@ -40,13 +47,13 @@ public abstract class Player<T> extends BaseIdentifiableEntity {
     }
 
 
-    private Piece<T> getMyPieceForId(Long pieceId) {
-        for (Piece myPiece : pieces) {
+    private boolean hasPieceWithId(Long pieceId) {
+        for (Piece<T> myPiece : pieces) {
             if (myPiece.getId().equals(pieceId)) {
-                return myPiece;
+                return true;
             }
         }
-        throw new PlayerException("No piece with id:" + pieceId + " for player:" + name);
+        return false;
     }
 
     protected abstract MovementStatus doMovement(Board<T> board, Movement<T> movement);

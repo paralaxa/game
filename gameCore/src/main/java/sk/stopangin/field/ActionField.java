@@ -2,9 +2,9 @@ package sk.stopangin.field;
 
 import lombok.Data;
 
-import java.util.Set;
+import java.io.Serializable;
 
 @Data
-public class ActionField extends Field {
-    private Set<Action> actions;
+public class ActionField<T extends Serializable, A extends Serializable> extends Field<T> {
+    private ActionData<A> actionData;
 }

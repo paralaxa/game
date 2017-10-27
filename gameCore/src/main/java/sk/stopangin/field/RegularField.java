@@ -1,4 +1,6 @@
 package sk.stopangin.field;
 
-public class RegularField extends Field<Integer> {
+import java.io.Serializable;
+
+public class RegularField<T extends Serializable> extends Field<T> {
 }

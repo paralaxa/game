@@ -5,14 +5,13 @@ import sk.stopangin.field.Field;
 import sk.stopangin.movement.Coordinates;
 import sk.stopangin.movement.Movement;
 import sk.stopangin.movement.MovementStatus;
-import sk.stopangin.movement.MovementType;
 import sk.stopangin.piece.Piece;
-import sk.stopangin.player.Player;
 
+import java.io.Serializable;
 import java.util.Set;
 
 @Data
-public abstract class Board<T> {
+public abstract class Board<T extends Serializable> {
     private Set<Field<T>> fields;
 
     public Board(Set<Field<T>> fields) {
@@ -31,17 +30,25 @@ public abstract class Board<T> {
 
     private MovementStatus updateBoard(Movement<T> movement) {
         for (Field<T> field : fields) {
-            Piece currentMovementPiece = movement.getPiece();
-            if (isPieceOnField(field, currentMovementPiece)) {
-                if (isValidMove(movement, field.getPosition(), movement.getNewPosition())) {
+            Long currentMovementPieceId = movement.getPieceId();
+            Piece<T> pieceFromField = getPieceFromField(field, currentMovementPieceId);
+            if (pieceFromField != null) {
+                if (pieceFromField.isValidMove(field.getPosition(), movement.getNewPosition())) {
                     removePieceFromPield(field);
                 } else {
                     return MovementStatus.INVALID_POSITION;
                 }
             }
-            putPieceOnNewField(movement, field, currentMovementPiece);
+            putPieceOnNewField(movement, field, pieceFromField);
         }
         return MovementStatus.DONE;
+    }
+
+    public Field<T> getFieldForCoordinates(Coordinates<T> coordinates) {
+        return fields.stream()
+                .filter(tField -> tField.getPosition().equals(coordinates))
+                .findFirst()
+                .get();
     }
 
     protected Piece<T> getPieceForCoordinates(Coordinates<T> coordinates) {
@@ -53,11 +60,19 @@ public abstract class Board<T> {
         return null;
     }
 
-    private boolean isPieceOnField(Field field, Piece currentMovementPiece) {
-        return field.getPiece() != null && field.getPiece().getId().equals(currentMovementPiece.getId());
+
+    private Piece<T> getPieceFromField(Field<T> field, Long currentMovementPieceId) {
+        if (isCurrentMovementsPieceOnField(currentMovementPieceId, field)) {
+            return field.getPiece();
+        }
+        return null;
     }
 
-    private void putPieceOnNewField(Movement movement, Field field, Piece currentMovementPiece) {
+    private boolean isCurrentMovementsPieceOnField(Long currentMovementPieceId, Field<T> field) {
+        return field.getPiece() != null && field.getPiece().getId().equals(currentMovementPieceId);
+    }
+
+    private void putPieceOnNewField(Movement<T> movement, Field<T> field, Piece<T> currentMovementPiece) {
         if (field.getPosition().equals(movement.getNewPosition())) {
             field.setPiece(currentMovementPiece);
         }
@@ -67,23 +82,6 @@ public abstract class Board<T> {
         field.setPiece(null);
     }
 
-    protected boolean isEmpty() { //todo implement
-        for (Field field : fields) {
-            if (field.getPiece() != null) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    private boolean isValidMove(Movement<T> movement, Coordinates<T> actualPosition, Coordinates<T> newCoordinates) {
-        for (MovementType movementType : movement.getPiece().getMovementTypes()) {
-            if (movementType.isMatch(actualPosition, newCoordinates)) {
-                return true;
-            }
-        }
-        return false;
-    }
 
     protected abstract boolean isMoveOutOfBoundaries(Movement<T> movement);
 
@@ -91,5 +89,5 @@ public abstract class Board<T> {
         return getPieceForCoordinates(movement.getNewPosition()) != null;
     }
 
-    public abstract Coordinates<Integer> getCoordinatesForPieceId(Long pieceId);
+    public abstract Coordinates<T> getCoordinatesForPieceId(Long pieceId);
 }

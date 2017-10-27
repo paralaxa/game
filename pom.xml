@@ -10,7 +10,7 @@
         <module>gameCore</module>
 		<module>simpleGame</module>
 		<module>gameApi</module>
-	</modules>
+    </modules>
     <packaging>pom</packaging>
 
 	<name>sk.stopangin.game</name>

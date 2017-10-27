@@ -15,8 +15,4 @@ public abstract  class CircularBoard extends Board{
         return false;
     }
 
-    @Override
-    protected boolean isMovementCollision(Movement movement) {
-        return false;
-    }
 }

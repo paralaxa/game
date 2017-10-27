@@ -10,7 +10,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class GameRepository {
     private Map<Long, Game> storage = new ConcurrentHashMap<>();
 
-    public Game save(Game<Long> game) {
+    public Game save(Game game) {
         return storage.put(game.getId(), game);
     }
 
