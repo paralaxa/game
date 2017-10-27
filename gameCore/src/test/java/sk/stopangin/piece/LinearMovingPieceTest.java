@@ -6,7 +6,7 @@ public class LinearMovingPieceTest {
 
     @Test
     public void createNewAndDoNotThrowException() throws Exception {
-        new LinearMovingPiece("test");
+        new LinearMovingPiece(1l,"test");
     }
 
 

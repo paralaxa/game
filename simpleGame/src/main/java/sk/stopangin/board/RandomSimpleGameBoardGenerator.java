@@ -15,7 +15,7 @@ public class RandomSimpleGameBoardGenerator {
     private RandomSimpleGameBoardGenerator() {
     }
 
-    public static Board generate() {
+    public static Board generate(Set<TwoDimensionalCoordinatesData> actionFieldsCoordinates) {
 
         Set<Field<TwoDimensionalCoordinatesData>> fields = new HashSet<>();
         for (int i = 0; i < FIELDS_COUNT; i++) {

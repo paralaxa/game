@@ -1,6 +1,7 @@
 package sk.stopangin.piece;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import sk.stopangin.entity.BaseIdentifiableEntity;
 import sk.stopangin.movement.Coordinates;
 import sk.stopangin.movement.MovementType;
@@ -11,11 +12,13 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Data
+@EqualsAndHashCode(callSuper = true)
 public abstract class Piece<T extends Serializable> extends BaseIdentifiableEntity {
     private String name;
     private Set<MovementType<T>> movementTypes = new HashSet<>();
 
-    public Piece(String name, MovementType<T>... varMovementTypes) {
+    public Piece(Long id, String name, MovementType<T>... varMovementTypes) {
+        setId(id);
         this.name = name;
         movementTypes.addAll(Arrays.asList(varMovementTypes));
     }

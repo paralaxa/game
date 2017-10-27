@@ -9,8 +9,8 @@ import java.util.Set;
 public class LinearMovingPiece extends Piece<Integer> {
 
 
-    public LinearMovingPiece(String name) {
-        super(name, new LinearMovementType());
+    public LinearMovingPiece(Long id, String name) {
+        super(id, name, new LinearMovementType());
     }
 
 }

@@ -4,4 +4,14 @@ public class TwoDimensionalCoordinates extends Coordinates<TwoDimensionalCoordin
     public TwoDimensionalCoordinates(TwoDimensionalCoordinatesData data) {
         super(data);
     }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        return super.equals(o);
+    }
 }

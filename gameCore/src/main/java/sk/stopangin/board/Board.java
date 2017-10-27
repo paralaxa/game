@@ -5,12 +5,14 @@ import sk.stopangin.field.Field;
 import sk.stopangin.movement.Coordinates;
 import sk.stopangin.movement.Movement;
 import sk.stopangin.movement.MovementStatus;
+import sk.stopangin.movement.TwoDimensionalCoordinatesData;
 import sk.stopangin.piece.Piece;
 
 import java.io.Serializable;
 import java.util.Set;
 
 @Data
+//todo define boolean for collision , so collision behaviour can be controlled via flag and multiple pieces can be allowed on one field, when collisionAllowed=true;
 public abstract class Board<T extends Serializable> {
     private Set<Field<T>> fields;
 
@@ -22,6 +24,7 @@ public abstract class Board<T extends Serializable> {
         if (isMoveOutOfBoundaries(movement)) {
             return MovementStatus.OUT_OF_BOUNDARIES;
         }
+
         if (isMovementCollision(movement)) {
             return MovementStatus.COLLISION;
         }
@@ -29,19 +32,35 @@ public abstract class Board<T extends Serializable> {
     }
 
     private MovementStatus updateBoard(Movement<T> movement) {
+        Long currentMovementPieceId = movement.getPieceId();
+        Piece<T> currentMovementPiece = null;
+        Field<T> currentMovementField = null, newMovementField = null;
         for (Field<T> field : fields) {
-            Long currentMovementPieceId = movement.getPieceId();
-            Piece<T> pieceFromField = getPieceFromField(field, currentMovementPieceId);
-            if (pieceFromField != null) {
-                if (pieceFromField.isValidMove(field.getPosition(), movement.getNewPosition())) {
-                    removePieceFromPield(field);
-                } else {
-                    return MovementStatus.INVALID_POSITION;
-                }
+            if (isCurrentMovementsPieceOnField(currentMovementPieceId, field)) {
+                currentMovementPiece = field.getPiece();
+                currentMovementField = field;
             }
-            putPieceOnNewField(movement, field, pieceFromField);
+            if (field.getPosition().equals(movement.getNewPosition())) {
+                newMovementField = field;
+            }
+            if (isEverythingSetup(currentMovementPiece, currentMovementField, newMovementField)) {
+                break;
+            }
         }
-        return MovementStatus.DONE;
+        if (isEverythingSetup(currentMovementPiece, currentMovementField, newMovementField)) {
+            if (currentMovementPiece.isValidMove(currentMovementField.getPosition(), movement.getNewPosition())) {
+                removePieceFromField(currentMovementField);
+                putPieceOnNewField(movement, newMovementField, currentMovementPiece);
+                return MovementStatus.DONE;
+            } else {
+                return MovementStatus.INVALID_POSITION;
+            }
+        }
+        throw new RuntimeException("wrong movement:" + movement.toString());
+    }
+
+    private boolean isEverythingSetup(Piece<T> currentMovementPiece, Field<T> currentMovementField, Field<T> newMovementField) {
+        return currentMovementField != null && newMovementField != null && currentMovementPiece != null;
     }
 
     public Field<T> getFieldForCoordinates(Coordinates<T> coordinates) {
@@ -52,21 +71,9 @@ public abstract class Board<T extends Serializable> {
     }
 
     protected Piece<T> getPieceForCoordinates(Coordinates<T> coordinates) {
-        for (Field<T> field : fields) {
-            if (field.getPosition().equals(coordinates)) {
-                return field.getPiece();
-            }
-        }
-        return null;
+        return getFieldForCoordinates(coordinates).getPiece();
     }
 
-
-    private Piece<T> getPieceFromField(Field<T> field, Long currentMovementPieceId) {
-        if (isCurrentMovementsPieceOnField(currentMovementPieceId, field)) {
-            return field.getPiece();
-        }
-        return null;
-    }
 
     private boolean isCurrentMovementsPieceOnField(Long currentMovementPieceId, Field<T> field) {
         return field.getPiece() != null && field.getPiece().getId().equals(currentMovementPieceId);
@@ -78,7 +85,7 @@ public abstract class Board<T extends Serializable> {
         }
     }
 
-    private void removePieceFromPield(Field<T> field) {
+    private void removePieceFromField(Field<T> field) {
         field.setPiece(null);
     }
 

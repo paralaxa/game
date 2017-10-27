@@ -9,4 +9,20 @@ import java.io.Serializable;
 @AllArgsConstructor
 public class Coordinates<T extends Serializable> {
     private T data;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Coordinates<?> that = (Coordinates<?>) o;
+
+        return data.equals(that.data);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = 31 *  data.hashCode();
+        return result;
+    }
 }
