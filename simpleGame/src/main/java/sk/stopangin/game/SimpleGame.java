@@ -67,19 +67,4 @@ public class SimpleGame extends Game<TwoDimensionalCoordinatesData, Void> {
         }
         return getPlayers().get(nextPlayerIndex);
     }
-
-//    @Override
-//    public Round<Integer> commitRound(Movement<Integer> movement) {
-//        movement.setNewPosition(new LinearCoordinates(getCurrentPlayesPiecePosition().getData() + getActiveRound().getData()));
-//        Round<Integer> integerRound = super.commitRound(movement);
-//        log.debug("Board after commit: " + getBoard());
-//        return integerRound;
-//    }
-//
-//    private Coordinates<Integer> getCurrentPlayesPiecePosition() {
-//        Piece<Integer> currentPiece = getActiveRound().getPlayer().getPieces().iterator().next();
-//        return getBoard().getCoordinatesForPieceId(currentPiece.getId());
-//    }
-
-
 }
