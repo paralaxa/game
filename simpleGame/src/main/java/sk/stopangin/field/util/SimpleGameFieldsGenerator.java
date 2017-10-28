@@ -51,7 +51,7 @@ public class SimpleGameFieldsGenerator {
                 ActionField<Integer, TwoDimensionalCoordinatesData, Void> actionField = new ActionField<>();
                 QuestionAction action = new QuestionAction();
                 ActionData actionData = new ActionData();
-                actionData.setInfo(question.getQuestion());
+                actionData.setInfo(question.getContent());
                 actionData.setData(question.getAnswer());
                 action.setScore(question.getScore());
                 action.setActionData(actionData);

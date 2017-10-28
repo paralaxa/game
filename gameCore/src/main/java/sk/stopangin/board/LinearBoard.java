@@ -1,7 +1,6 @@
 package sk.stopangin.board;
 
 import sk.stopangin.field.Field;
-import sk.stopangin.movement.Movement;
 
 import java.util.Set;
 

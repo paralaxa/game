@@ -7,7 +7,7 @@ import lombok.Data;
 @Builder
 public class Question {
     private Long id;
-    private String question;
+    private String content;
     private String answer;
     private int score;
 }

@@ -2,7 +2,6 @@ package sk.stopangin.board;
 
 import sk.stopangin.field.Field;
 import sk.stopangin.movement.Coordinates;
-import sk.stopangin.movement.Movement;
 import sk.stopangin.movement.TwoDimensionalCoordinatesData;
 
 import java.util.Set;

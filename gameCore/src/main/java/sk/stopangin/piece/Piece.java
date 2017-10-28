@@ -6,7 +6,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import sk.stopangin.entity.BaseIdentifiableEntity;
 import sk.stopangin.movement.Coordinates;
-import sk.stopangin.movement.DirectMovementType;
 import sk.stopangin.movement.MovementType;
 
 import java.io.Serializable;

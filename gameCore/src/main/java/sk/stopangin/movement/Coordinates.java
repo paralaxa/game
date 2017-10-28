@@ -22,7 +22,6 @@ public class Coordinates<T extends Serializable> {
 
     @Override
     public int hashCode() {
-        int result = 31 *  data.hashCode();
-        return result;
+        return  31 *  data.hashCode();
     }
 }

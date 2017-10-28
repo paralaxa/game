@@ -19,7 +19,6 @@ import sk.stopangin.repository.InMemoryQuestionsRepositoryImpl;
 import sk.stopangin.repository.QuestionsRepository;
 import sk.stopangin.service.GameService;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;

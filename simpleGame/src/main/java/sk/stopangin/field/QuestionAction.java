@@ -4,8 +4,6 @@ import lombok.Data;
 import sk.stopangin.game.Game;
 import sk.stopangin.movement.TwoDimensionalCoordinatesData;
 import sk.stopangin.player.Player;
-
-import java.io.Serializable;
 @Data
 public class QuestionAction extends Action<Integer, TwoDimensionalCoordinatesData, Void> {
     private int score;

@@ -1,7 +1,6 @@
 package sk.stopangin.movement;
 
 import lombok.Data;
-import sk.stopangin.piece.Piece;
 
 import java.io.Serializable;
 

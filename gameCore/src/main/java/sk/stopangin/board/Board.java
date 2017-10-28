@@ -23,7 +23,8 @@ public abstract class Board<T extends Serializable> {
     public MovementStatus updateBasedOnMovement(Movement<T> movement) {
         Long currentMovementPieceId = movement.getPieceId();
         Piece<T> currentMovementPiece = null;
-        Field<T> currentMovementField = null, newMovementField = null;
+        Field<T> currentMovementField = null;
+        Field<T> newMovementField = null;
         for (Field<T> field : fields) {
             if (isCurrentMovementsPieceOnField(currentMovementPieceId, field)) {
                 currentMovementPiece = field.getPiece();

@@ -8,7 +8,6 @@ import sk.stopangin.field.Field;
 import sk.stopangin.movement.TwoDimensionalCoordinates;
 import sk.stopangin.movement.TwoDimensionalCoordinatesData;
 import sk.stopangin.piece.AnyDirectionTwoDimensionalMovingPiece;
-import sk.stopangin.piece.LinearMovingPiece;
 import sk.stopangin.piece.Piece;
 import sk.stopangin.player.Player;
 
@@ -23,7 +22,7 @@ public class SimpleGame extends Game<TwoDimensionalCoordinatesData, Void> {
 
     @Override
     boolean isValidConfiguration(List<Player<TwoDimensionalCoordinatesData>> players, Board<TwoDimensionalCoordinatesData> board) {
-        return board instanceof SimpleBoard && players.size() > 0;
+        return board instanceof SimpleBoard && !players.isEmpty();
     }
 
     @Override
@@ -32,10 +31,14 @@ public class SimpleGame extends Game<TwoDimensionalCoordinatesData, Void> {
         setActiveRound(round);
         return round;
     }
+
     public Round<TwoDimensionalCoordinatesData, Void> startGame(SimpleBoard simpleBoard, List<Player<TwoDimensionalCoordinatesData>> players, Player<TwoDimensionalCoordinatesData> activePlayer) {
-        Round<TwoDimensionalCoordinatesData, Void> round = super.startGame(simpleBoard, players, players.get(0));
-        enrichPlayersWithPieces(players);
-        return round;
+        if (isValidConfiguration(players, simpleBoard)) {
+            Round<TwoDimensionalCoordinatesData, Void> round = super.startGame(simpleBoard, players, activePlayer);
+            enrichPlayersWithPieces(players);
+            return round;
+        }
+        throw new GameException("Not a valid configuration, either players are not defined or board is not of a type simple board");
     }
 
     public Round<TwoDimensionalCoordinatesData, Void> startGame(SimpleBoard simpleBoard, List<Player<TwoDimensionalCoordinatesData>> players) {
@@ -55,15 +58,6 @@ public class SimpleGame extends Game<TwoDimensionalCoordinatesData, Void> {
             beginningField.setPiece(piece);
             iter++;
         }
-    }
-
-
-    private boolean hasTwoOrMorePlayers(List<Player<TwoDimensionalCoordinatesData>> players) {
-        return players.size() >= 2;
-    }
-
-    private boolean isSimpleBoard(Board<TwoDimensionalCoordinatesData> board) {
-        return board instanceof SimpleBoard;
     }
 
     @Override
