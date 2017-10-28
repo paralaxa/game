@@ -3,9 +3,11 @@ package sk.stopangin.game;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import sk.stopangin.board.Board;
-import sk.stopangin.board.ChessboardGenerator;
 import sk.stopangin.board.SimpleBoard;
-import sk.stopangin.movement.*;
+import sk.stopangin.field.Field;
+import sk.stopangin.movement.TwoDimensionalCoordinates;
+import sk.stopangin.movement.TwoDimensionalCoordinatesData;
+import sk.stopangin.piece.AnyDirectionTwoDimensionalMovingPiece;
 import sk.stopangin.piece.LinearMovingPiece;
 import sk.stopangin.piece.Piece;
 import sk.stopangin.player.Player;
@@ -30,21 +32,27 @@ public class SimpleGame extends Game<TwoDimensionalCoordinatesData, Void> {
         setActiveRound(round);
         return round;
     }
-
-    public Round<TwoDimensionalCoordinatesData, Void> startGame(List<Player<TwoDimensionalCoordinatesData>> players) {
+    public Round<TwoDimensionalCoordinatesData, Void> startGame(SimpleBoard simpleBoard, List<Player<TwoDimensionalCoordinatesData>> players, Player<TwoDimensionalCoordinatesData> activePlayer) {
+        Round<TwoDimensionalCoordinatesData, Void> round = super.startGame(simpleBoard, players, players.get(0));
         enrichPlayersWithPieces(players);
-        return super.startGame(new SimpleBoard(ChessboardGenerator.generateFieldsForChessboard()), players, players.get(0));
+        return round;
+    }
+
+    public Round<TwoDimensionalCoordinatesData, Void> startGame(SimpleBoard simpleBoard, List<Player<TwoDimensionalCoordinatesData>> players) {
+        return this.startGame(simpleBoard, players, players.get(0));
     }
 
     private void enrichPlayersWithPieces(List<Player<TwoDimensionalCoordinatesData>> players) {
         long iter = 0;
         for (Player player : players) {
             player.setId(iter);
-            Piece piece = new LinearMovingPiece(player.getId(), player.getName() + "_piece");
+            Piece piece = new AnyDirectionTwoDimensionalMovingPiece(player.getId(), player.getName() + "_piece");
             piece.setId(player.getId());
             Set<Piece> pieces1 = new HashSet<>();
             pieces1.add(piece);
             player.setPieces(pieces1);
+            Field<TwoDimensionalCoordinatesData> beginningField = getBoard().getFieldForCoordinates(new TwoDimensionalCoordinates(new TwoDimensionalCoordinatesData(1, 1)));
+            beginningField.setPiece(piece);
             iter++;
         }
     }

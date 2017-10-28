@@ -1,6 +1,7 @@
 package sk.stopangin.board;
 
 import lombok.Data;
+import sk.stopangin.field.ActionField;
 import sk.stopangin.field.Field;
 import sk.stopangin.movement.Coordinates;
 import sk.stopangin.movement.Movement;
@@ -20,7 +21,7 @@ public abstract class Board<T extends Serializable> {
     }
 
     public MovementStatus updateBasedOnMovement(Movement<T> movement) {
-         Long currentMovementPieceId = movement.getPieceId();
+        Long currentMovementPieceId = movement.getPieceId();
         Piece<T> currentMovementPiece = null;
         Field<T> currentMovementField = null, newMovementField = null;
         for (Field<T> field : fields) {
@@ -46,12 +47,23 @@ public abstract class Board<T extends Serializable> {
                 }
                 removePieceFromField(currentMovementField);
                 putPieceOnNewField(movement, newMovementField, currentMovementPiece);
-                return MovementStatus.DONE;
+                return movementStatusBasedOnNewMovementFieldType(newMovementField);
             } else {
                 return MovementStatus.INVALID_POSITION;
             }
         }
         return MovementStatus.NON_EXISTING_FIELD;
+    }
+
+    private MovementStatus movementStatusBasedOnNewMovementFieldType(Field<T> newMovementField) {
+        if (newMovementField instanceof ActionField) {
+            if (((ActionField) newMovementField).getAction().getActionData().isBlocking()) {
+                return MovementStatus.ACTION_REQUIRED;
+            } else {
+                return MovementStatus.ACTION_POSSIBLE;
+            }
+        }
+        return MovementStatus.DONE;
     }
 
     private boolean isEverythingSetup(Piece<T> currentMovementPiece, Field<T> currentMovementField, Field<T> newMovementField) {

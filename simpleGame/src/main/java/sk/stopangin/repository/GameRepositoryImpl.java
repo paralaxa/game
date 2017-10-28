@@ -7,7 +7,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Component
-public class GameRepository {
+public class GameRepositoryImpl {
     private Map<Long, Game> storage = new ConcurrentHashMap<>();
 
     public Game save(Game game) {

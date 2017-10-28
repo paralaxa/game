@@ -5,6 +5,6 @@ import lombok.Data;
 import java.io.Serializable;
 
 @Data
-public class ActionField<T extends Serializable, A extends Serializable> extends Field<T> {
-    private ActionData<A> actionData;
+public class ActionField<A extends Serializable, T extends Serializable,R> extends Field<T> {
+    private Action<A,T,R> action;
 }

@@ -17,7 +17,7 @@ public class BoardTest {
 
     @Before
     public void setUp() throws Exception {
-        rectangularBoard = new RectangularBoard(ChessboardGenerator.generateFieldsForChessboard()) {
+        rectangularBoard = new RectangularBoard(RectangularBoardGenerator.generateFields(9, new TwoDimensionalCoordinatesData(1, 2))) {
         };
         Field<TwoDimensionalCoordinatesData> field1_1 = getFieldForCoordinatesData(new TwoDimensionalCoordinatesData(1, 1));
         Field<TwoDimensionalCoordinatesData> field2_1 = getFieldForCoordinatesData(new TwoDimensionalCoordinatesData(2, 1));
@@ -34,9 +34,19 @@ public class BoardTest {
     public void updateBasedOnValidMovement() throws Exception {
         Movement<TwoDimensionalCoordinatesData> movement = new Movement<>();
         movement.setPieceId(1l);
-        movement.setNewPosition(new TwoDimensionalCoordinates(new TwoDimensionalCoordinatesData(1, 2)));
+        movement.setNewPosition(new TwoDimensionalCoordinates(new TwoDimensionalCoordinatesData(2, 2)));
         MovementStatus movementStatus = rectangularBoard.updateBasedOnMovement(movement);
         Assert.assertEquals(MovementStatus.DONE, movementStatus);
+        Assert.assertEquals(new TwoDimensionalCoordinates(new TwoDimensionalCoordinatesData(2, 2)), rectangularBoard.getCoordinatesForPieceId(1l));
+    }
+
+    @Test
+    public void updateBasedOnValidMovementToActionFieldWithActionPossible() throws Exception {
+        Movement<TwoDimensionalCoordinatesData> movement = new Movement<>();
+        movement.setPieceId(1l);
+        movement.setNewPosition(new TwoDimensionalCoordinates(new TwoDimensionalCoordinatesData(1, 2)));
+        MovementStatus movementStatus = rectangularBoard.updateBasedOnMovement(movement);
+        Assert.assertEquals(MovementStatus.ACTION_POSSIBLE, movementStatus);
         Assert.assertEquals(new TwoDimensionalCoordinates(new TwoDimensionalCoordinatesData(1, 2)), rectangularBoard.getCoordinatesForPieceId(1l));
     }
 

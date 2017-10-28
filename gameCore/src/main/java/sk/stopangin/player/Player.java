@@ -14,6 +14,7 @@ import java.util.Set;
 public abstract class Player<T extends Serializable> extends BaseIdentifiableEntity {
     private String name;
     private Set<Piece<T>> pieces;
+    private int score;
 
     public MovementStatus doMove(Board<T> board, Movement<T> movement) {
         updateMovementWithMyPiece(movement);

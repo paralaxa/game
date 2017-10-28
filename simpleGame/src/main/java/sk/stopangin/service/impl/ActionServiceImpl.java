@@ -11,19 +11,19 @@ import sk.stopangin.movement.TwoDimensionalCoordinatesData;
 public class ActionServiceImpl {
 
 
-    public Integer performAction(Game<TwoDimensionalCoordinatesData, Void> game) {
-        ActionData<Integer> actionData = getActionData(game);
-        return actionData.getAction().perform(game);
-    }
-
-    public ActionData<Integer> getActionData(Game<TwoDimensionalCoordinatesData, Void> game) {
-        Movement<TwoDimensionalCoordinatesData> movement = game.getActiveRound().getMovement();
-        Coordinates<TwoDimensionalCoordinatesData> currentRoundPosition = movement.getNewPosition();
-        Field<TwoDimensionalCoordinatesData> fieldForCoordinates = game.getBoard().getFieldForCoordinates(currentRoundPosition);
-        if (fieldForCoordinates instanceof ActionField) {
-            return ((ActionField<TwoDimensionalCoordinatesData, Integer>) fieldForCoordinates).getActionData();
-        }
-        return null;
-    }
+//    public Integer performAction(Game<TwoDimensionalCoordinatesData, Void> game, String data) {
+//        ActionData<Integer> actionData = getActionData(game);
+//        return actionData.getAction().perform(game, data);
+//    }
+//
+//    public ActionData<Integer> getActionData(Game<TwoDimensionalCoordinatesData, Void> game) {
+//        Movement<TwoDimensionalCoordinatesData> movement = game.getActiveRound().getMovement();
+//        Coordinates<TwoDimensionalCoordinatesData> currentRoundPosition = movement.getNewPosition();
+//        Field<TwoDimensionalCoordinatesData> fieldForCoordinates = game.getBoard().getFieldForCoordinates(currentRoundPosition);
+//        if (fieldForCoordinates instanceof ActionField) {
+//            return ((ActionField<TwoDimensionalCoordinatesData, Integer>) fieldForCoordinates).getActionData();
+//        }
+//        return null;
+//    }
 
 }
