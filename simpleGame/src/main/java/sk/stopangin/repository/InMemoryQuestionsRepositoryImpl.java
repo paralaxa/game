@@ -11,35 +11,35 @@ public class InMemoryQuestionsRepositoryImpl implements QuestionsRepository{
     private void init() {
         Question q1 = Question.builder()
                 .id(1l)
-                .question("kolko dni ma januar")
+                .content("kolko dni ma januar")
                 .score(1)
                 .answer("31")
                 .build();
 
         Question q2 = Question.builder()
                 .id(2l)
-                .question("kolko dni ma marec")
+                .content("kolko dni ma marec")
                 .score(2)
                 .answer("31")
                 .build();
 
         Question q3 = Question.builder()
                 .id(3l)
-                .question("kolko dni ma april")
+                .content("kolko dni ma april")
                 .score(3)
                 .answer("30")
                 .build();
 
         Question q4 = Question.builder()
                 .id(4l)
-                .question("kolko dni ma maj")
+                .content("kolko dni ma maj")
                 .score(4)
                 .answer("31")
                 .build();
 
         Question q5 = Question.builder()
                 .id(5l)
-                .question("kolko dni ma jun")
+                .content("kolko dni ma jun")
                 .score(5)
                 .answer("30")
                 .build();
