@@ -3,7 +3,7 @@ package sk.stopangin.movement;
 public enum MovementStatus {
     DONE,
     COLLISION,
-    OUT_OF_BOUNDARIES,
+    NON_EXISTING_FIELD,
     INVALID_POSITION,
     ACTION_POSSIBLE,
     ACTION_REQUIRED

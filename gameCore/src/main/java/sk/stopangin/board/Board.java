@@ -5,7 +5,6 @@ import sk.stopangin.field.Field;
 import sk.stopangin.movement.Coordinates;
 import sk.stopangin.movement.Movement;
 import sk.stopangin.movement.MovementStatus;
-import sk.stopangin.movement.TwoDimensionalCoordinatesData;
 import sk.stopangin.piece.Piece;
 
 import java.io.Serializable;
@@ -21,18 +20,7 @@ public abstract class Board<T extends Serializable> {
     }
 
     public MovementStatus updateBasedOnMovement(Movement<T> movement) {
-        if (isMoveOutOfBoundaries(movement)) {
-            return MovementStatus.OUT_OF_BOUNDARIES;
-        }
-
-        if (isMovementCollision(movement)) {
-            return MovementStatus.COLLISION;
-        }
-        return updateBoard(movement);
-    }
-
-    private MovementStatus updateBoard(Movement<T> movement) {
-        Long currentMovementPieceId = movement.getPieceId();
+         Long currentMovementPieceId = movement.getPieceId();
         Piece<T> currentMovementPiece = null;
         Field<T> currentMovementField = null, newMovementField = null;
         for (Field<T> field : fields) {
@@ -47,8 +35,15 @@ public abstract class Board<T extends Serializable> {
                 break;
             }
         }
+        return movementStatusForCurrentMovement(movement, currentMovementPiece, currentMovementField, newMovementField);
+    }
+
+    private MovementStatus movementStatusForCurrentMovement(Movement<T> movement, Piece<T> currentMovementPiece, Field<T> currentMovementField, Field<T> newMovementField) {
         if (isEverythingSetup(currentMovementPiece, currentMovementField, newMovementField)) {
             if (currentMovementPiece.isValidMove(currentMovementField.getPosition(), movement.getNewPosition())) {
+                if (isMovementCollision(movement)) {
+                    return MovementStatus.COLLISION;
+                }
                 removePieceFromField(currentMovementField);
                 putPieceOnNewField(movement, newMovementField, currentMovementPiece);
                 return MovementStatus.DONE;
@@ -56,7 +51,7 @@ public abstract class Board<T extends Serializable> {
                 return MovementStatus.INVALID_POSITION;
             }
         }
-        throw new RuntimeException("wrong movement:" + movement.toString());
+        return MovementStatus.NON_EXISTING_FIELD;
     }
 
     private boolean isEverythingSetup(Piece<T> currentMovementPiece, Field<T> currentMovementField, Field<T> newMovementField) {
@@ -67,7 +62,7 @@ public abstract class Board<T extends Serializable> {
         return fields.stream()
                 .filter(tField -> tField.getPosition().equals(coordinates))
                 .findFirst()
-                .get();
+                .orElse(null);
     }
 
     protected Piece<T> getPieceForCoordinates(Coordinates<T> coordinates) {
@@ -89,8 +84,6 @@ public abstract class Board<T extends Serializable> {
         field.setPiece(null);
     }
 
-
-    protected abstract boolean isMoveOutOfBoundaries(Movement<T> movement);
 
     protected boolean isMovementCollision(Movement<T> movement) {
         return getPieceForCoordinates(movement.getNewPosition()) != null;

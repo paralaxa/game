@@ -13,7 +13,6 @@ import sk.stopangin.piece.Piece;
 
 public class BoardTest {
 
-
     private RectangularBoard rectangularBoard;
 
     @Before
@@ -31,7 +30,6 @@ public class BoardTest {
         field3_1.setPiece(piece3_1);
     }
 
-
     @Test
     public void updateBasedOnValidMovement() throws Exception {
         Movement<TwoDimensionalCoordinatesData> movement = new Movement<>();
@@ -43,25 +41,34 @@ public class BoardTest {
     }
 
     @Test
-    public void getFieldForCoordinates() throws Exception {
+    public void updateBasedOnInvalidMovementOutOfBoard() throws Exception {
+        Movement<TwoDimensionalCoordinatesData> movement = new Movement<>();
+        movement.setPieceId(1l);
+        movement.setNewPosition(new TwoDimensionalCoordinates(new TwoDimensionalCoordinatesData(2, 9)));
+        MovementStatus movementStatus = rectangularBoard.updateBasedOnMovement(movement);
+        Assert.assertEquals(MovementStatus.NON_EXISTING_FIELD, movementStatus);
+        Assert.assertEquals(new TwoDimensionalCoordinates(new TwoDimensionalCoordinatesData(1, 1)), rectangularBoard.getCoordinatesForPieceId(1l));
     }
 
     @Test
-    public void getPieceForCoordinates() throws Exception {
+    public void updateBasedOnInvalidMovementCollision() throws Exception {
+        Movement<TwoDimensionalCoordinatesData> movement = new Movement<>();
+        movement.setPieceId(1l);
+        movement.setNewPosition(new TwoDimensionalCoordinates(new TwoDimensionalCoordinatesData(2, 1)));
+        MovementStatus movementStatus = rectangularBoard.updateBasedOnMovement(movement);
+        Assert.assertEquals(MovementStatus.COLLISION, movementStatus);
+        Assert.assertEquals(new TwoDimensionalCoordinates(new TwoDimensionalCoordinatesData(1, 1)), rectangularBoard.getCoordinatesForPieceId(1l));
     }
 
     @Test
-    public void isMoveOutOfBoundaries() throws Exception {
+    public void updateBasedOnInvalidMovementType() throws Exception {
+        Movement<TwoDimensionalCoordinatesData> movement = new Movement<>();
+        movement.setPieceId(1l);
+        movement.setNewPosition(new TwoDimensionalCoordinates(new TwoDimensionalCoordinatesData(2, 3)));
+        MovementStatus movementStatus = rectangularBoard.updateBasedOnMovement(movement);
+        Assert.assertEquals(MovementStatus.INVALID_POSITION, movementStatus);
+        Assert.assertEquals(new TwoDimensionalCoordinates(new TwoDimensionalCoordinatesData(1, 1)), rectangularBoard.getCoordinatesForPieceId(1l));
     }
-
-    @Test
-    public void isMovementCollision() throws Exception {
-    }
-
-    @Test
-    public void getCoordinatesForPieceId() throws Exception {
-    }
-
 
     private Field<TwoDimensionalCoordinatesData> getFieldForCoordinatesData(TwoDimensionalCoordinatesData twoDimensionalCoordinatesData) {
         for (Field<TwoDimensionalCoordinatesData> twoDimensionalCoordinatesDataField : rectangularBoard.getFields()) {
