@@ -23,6 +23,13 @@ public abstract class Player<T extends Serializable> extends BaseIdentifiableEnt
         return doMovement(board, movement);
     }
 
+    /**
+     * If id is null and there is only one piece for player, this method return the only pieces id,
+     * otherwise finds the piece for given id and return it
+     *
+     * @param pieceId piece id to be found, or null, if there is only one piece for player
+     * @return valid piece id for this player
+     */
     public Long findOrRepairPieceId(Long pieceId) {
         if (pieceNotSpecifiedForMovement(pieceId) && hasOnlyOnePiece()) {
             return getPlayersOnlyPiece().getId();
