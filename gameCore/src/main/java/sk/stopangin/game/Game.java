@@ -72,7 +72,7 @@ public abstract class Game<T extends Serializable, R> extends BaseIdentifiableEn
     }
 
     private boolean isNextRoundBlockedForMovementStatus(MovementStatus movementStatus) {
-         return movementStatus.isAllowMovement();
+         return !movementStatus.isAllowMovement();
     }
 
 }

@@ -1,5 +1,6 @@
 package sk.stopangin.field;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import sk.stopangin.entity.BaseIdentifiableEntity;
 
@@ -8,5 +9,6 @@ public class ActionData extends BaseIdentifiableEntity {
     private boolean blocking; //signals, that round cannot be finished without performing action
     private boolean used;//this action was used and won't be fired anymore
     private String info;
+    @JsonIgnore
     private String data;
 }
