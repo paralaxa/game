@@ -1,6 +1,7 @@
 package sk.stopangin.board;
 
 import lombok.Data;
+import sk.stopangin.field.ActionData;
 import sk.stopangin.field.ActionField;
 import sk.stopangin.field.Field;
 import sk.stopangin.movement.Coordinates;
@@ -30,7 +31,7 @@ public abstract class Board<T extends Serializable> {
                 currentMovementPiece = field.getPiece();
                 currentMovementField = field;
             }
-            if (field.getPosition().equals(movement.getNewPosition())) {
+            if (isFieldNewMovementsField(movement, field)) {
                 newMovementField = field;
             }
             if (isEverythingSetup(currentMovementPiece, currentMovementField, newMovementField)) {
@@ -40,15 +41,22 @@ public abstract class Board<T extends Serializable> {
         return movementStatusForCurrentMovement(movement, currentMovementPiece, currentMovementField, newMovementField);
     }
 
+    private boolean isFieldNewMovementsField(Movement<T> movement, Field<T> field) {
+        return field.getPosition().equals(movement.getNewPosition());
+    }
+
     private MovementStatus movementStatusForCurrentMovement(Movement<T> movement, Piece<T> currentMovementPiece, Field<T> currentMovementField, Field<T> newMovementField) {
         if (isEverythingSetup(currentMovementPiece, currentMovementField, newMovementField)) {
             if (currentMovementPiece.isValidMove(currentMovementField.getPosition(), movement.getNewPosition())) {
                 if (isMovementCollision(movement)) {
                     return MovementStatus.COLLISION;
                 }
-                removePieceFromField(currentMovementField);
-                putPieceOnNewField(movement, newMovementField, currentMovementPiece);
-                return movementStatusBasedOnNewMovementFieldType(newMovementField);
+                MovementStatus movementStatus = movementStatusBasedOnNewMovementFieldType(newMovementField);
+                if (MovementStatus.DONE.equals(movementStatus)) {
+                    removePieceFromField(currentMovementField);
+                    putPieceOnNewField(newMovementField, currentMovementPiece);
+                }
+                return movementStatus;
             } else {
                 return MovementStatus.INVALID_POSITION;
             }
@@ -58,10 +66,13 @@ public abstract class Board<T extends Serializable> {
 
     private MovementStatus movementStatusBasedOnNewMovementFieldType(Field<T> newMovementField) {
         if (newMovementField instanceof ActionField) {
-            if (((ActionField) newMovementField).getAction().getActionData().isBlocking()) {
-                return MovementStatus.ACTION_REQUIRED;
-            } else {
-                return MovementStatus.ACTION_POSSIBLE;
+            ActionData actionData = ((ActionField) newMovementField).getAction().getActionData();
+            if (!actionData.isUsed()) {
+                if (actionData.isBlocking()) {
+                    return MovementStatus.ACTION_REQUIRED;
+                } else {
+                    return MovementStatus.ACTION_POSSIBLE;
+                }
             }
         }
         return MovementStatus.DONE;
@@ -87,10 +98,8 @@ public abstract class Board<T extends Serializable> {
         return field.getPiece() != null && field.getPiece().getId().equals(currentMovementPieceId);
     }
 
-    private void putPieceOnNewField(Movement<T> movement, Field<T> field, Piece<T> currentMovementPiece) {
-        if (field.getPosition().equals(movement.getNewPosition())) {
+    private void putPieceOnNewField(Field<T> field, Piece<T> currentMovementPiece) {
             field.setPiece(currentMovementPiece);
-        }
     }
 
     private void removePieceFromField(Field<T> field) {

@@ -1,6 +1,8 @@
 package sk.stopangin.movement;
 
-public class DiagonalMovementType implements MovementType<TwoDimensionalCoordinatesData> {
+import java.io.Serializable;
+
+public class DiagonalMovementType implements MovementType<TwoDimensionalCoordinatesData>, Serializable {
     private int[][] movementMatrix = {{1, 1}, {1, -1}, {-1, 1}, {-1, -1}};
     private MatrixBasedMovement matrixBasedMovement = new MatrixBasedMovement(movementMatrix);
 

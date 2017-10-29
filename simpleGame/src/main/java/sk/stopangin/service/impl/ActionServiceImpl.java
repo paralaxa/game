@@ -1,29 +1,42 @@
 package sk.stopangin.service.impl;
 
-import sk.stopangin.field.ActionData;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import sk.stopangin.field.Action;
 import sk.stopangin.field.ActionField;
 import sk.stopangin.field.Field;
 import sk.stopangin.game.Game;
 import sk.stopangin.movement.Coordinates;
 import sk.stopangin.movement.Movement;
 import sk.stopangin.movement.TwoDimensionalCoordinatesData;
+import sk.stopangin.repository.GameRepository;
+import sk.stopangin.service.ActionService;
 
-public class ActionServiceImpl {
+import javax.ws.rs.Path;
 
+@RestController
+@RequestMapping("action")
+public class ActionServiceImpl implements ActionService<Integer, TwoDimensionalCoordinatesData, Void> {
 
-//    public Integer performAction(Game<TwoDimensionalCoordinatesData, Void> game, String data) {
-//        ActionData<Integer> actionData = getActionData(game);
-//        return actionData.getAction().perform(game, data);
-//    }
-//
-//    public ActionData<Integer> getActionData(Game<TwoDimensionalCoordinatesData, Void> game) {
-//        Movement<TwoDimensionalCoordinatesData> movement = game.getActiveRound().getMovement();
-//        Coordinates<TwoDimensionalCoordinatesData> currentRoundPosition = movement.getNewPosition();
-//        Field<TwoDimensionalCoordinatesData> fieldForCoordinates = game.getBoard().getFieldForCoordinates(currentRoundPosition);
-//        if (fieldForCoordinates instanceof ActionField) {
-//            return ((ActionField<TwoDimensionalCoordinatesData, Integer>) fieldForCoordinates).getActionData();
-//        }
-//        return null;
-//    }
+    @Autowired
+    private GameRepository<TwoDimensionalCoordinatesData, Void> gameRepository;
+
+    public Integer performAction(Long gameId, String data) {
+        Game<TwoDimensionalCoordinatesData, Void> game = gameRepository.getById(gameId);
+        Action<Integer, TwoDimensionalCoordinatesData, Void> action = getActionForCurrentRound(gameId);
+        return action.perform(game, data);
+    }
+
+    public Action<Integer, TwoDimensionalCoordinatesData, Void> getActionForCurrentRound(Long gameId) {
+        Game<TwoDimensionalCoordinatesData, Void> game = gameRepository.getById(gameId);
+        Movement<TwoDimensionalCoordinatesData> movement = game.getActiveRound().getMovement();
+        Coordinates<TwoDimensionalCoordinatesData> currentRoundPosition = movement.getNewPosition();
+        Field<TwoDimensionalCoordinatesData> fieldForCoordinates = game.getBoard().getFieldForCoordinates(currentRoundPosition);
+        if (fieldForCoordinates instanceof ActionField) {
+            return ((ActionField<Integer, TwoDimensionalCoordinatesData, Void>) fieldForCoordinates).getAction();
+        }
+        return null;
+    }
 
 }

@@ -1,13 +1,17 @@
 package sk.stopangin.repository;
 
+import org.springframework.stereotype.Component;
 import sk.stopangin.field.Question;
 
+import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.List;
 
-public class InMemoryQuestionsRepositoryImpl implements QuestionsRepository{
+@Component
+public class InMemoryQuestionsRepositoryImpl implements QuestionsRepository {
     private List<Question> questions = new ArrayList<>();
 
+    @PostConstruct
     private void init() {
         Question q1 = Question.builder()
                 .id(1l)

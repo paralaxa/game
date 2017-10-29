@@ -36,6 +36,9 @@ public class SimpleGameFieldsGenerator {
         Set<TwoDimensionalCoordinatesData> result = new HashSet<>();
         for (int i = 0; i < questions.size(); i++) {
             TwoDimensionalCoordinatesData twoDimensionalCoordinatesData = new TwoDimensionalCoordinatesData(generateRandomNumberFromTo(1, max), generateRandomNumberFromTo(1, max));
+            if(i==0){
+                twoDimensionalCoordinatesData = new TwoDimensionalCoordinatesData(1, 2);
+            }
             while (result.contains(twoDimensionalCoordinatesData)) {
                 twoDimensionalCoordinatesData = new TwoDimensionalCoordinatesData(generateRandomNumberFromTo(1, max), generateRandomNumberFromTo(1, max));
             }

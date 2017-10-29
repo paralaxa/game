@@ -25,8 +25,6 @@ public abstract class Player<T extends Serializable> extends BaseIdentifiableEnt
         Long currentMovementPieceId = movement.getPieceId();
         if (pieceNotSpecifiedForMovement(currentMovementPieceId) && hasOnlyOnePiece()) {
             currentMovementPieceId = getPlayersOnlyPiece().getId();
-        } else {
-            throw new PlayerException("Piece not specified for movement");
         }
         if (hasPieceWithId(currentMovementPieceId)) {
             movement.setPieceId(currentMovementPieceId);

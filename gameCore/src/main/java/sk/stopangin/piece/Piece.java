@@ -16,7 +16,6 @@ import java.util.Set;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public abstract class Piece<T extends Serializable> extends BaseIdentifiableEntity {
-    Logger log = LoggerFactory.getLogger(Piece.class);
 
     private String name;
     private Set<MovementType<T>> movementTypes = new HashSet<>();
@@ -30,7 +29,6 @@ public abstract class Piece<T extends Serializable> extends BaseIdentifiableEnti
     public boolean isValidMove(Coordinates<T> actualPosition, Coordinates<T> newCoordinates) {
         for (MovementType movementType : movementTypes) {
             if (movementType.isMatch(actualPosition, newCoordinates)) {
-                log.info("Movement match {} for piece{}", movementType, this);
                 return true;
             }
         }

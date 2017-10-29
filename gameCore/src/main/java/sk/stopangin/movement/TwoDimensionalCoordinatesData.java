@@ -1,13 +1,20 @@
 package sk.stopangin.movement;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 
+import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 
 @Data
-@AllArgsConstructor
 public class TwoDimensionalCoordinatesData implements Serializable {
     private int x;
     private int y;
+
+    public TwoDimensionalCoordinatesData() {
+    }
+
+    public TwoDimensionalCoordinatesData(int x, int y) {
+        this.x = x;
+        this.y = y;
+    }
 }

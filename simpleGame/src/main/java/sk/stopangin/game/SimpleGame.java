@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import sk.stopangin.board.Board;
 import sk.stopangin.board.SimpleBoard;
 import sk.stopangin.field.Field;
+import sk.stopangin.movement.Movement;
 import sk.stopangin.movement.TwoDimensionalCoordinates;
 import sk.stopangin.movement.TwoDimensionalCoordinatesData;
 import sk.stopangin.piece.AnyDirectionTwoDimensionalMovingPiece;
@@ -58,6 +59,15 @@ public class SimpleGame extends Game<TwoDimensionalCoordinatesData, Void> {
             beginningField.setPiece(piece);
             iter++;
         }
+    }
+
+    @Override
+    protected Movement<TwoDimensionalCoordinatesData> createDefaultMovementForPiece(Long pieceId) {
+        TwoDimensionalCoordinates twoDimensionalCoordinates = new TwoDimensionalCoordinates(new TwoDimensionalCoordinatesData(1, 1));
+        Movement<TwoDimensionalCoordinatesData> movement = new Movement<>();
+        movement.setPieceId(pieceId);
+        movement.setNewPosition(twoDimensionalCoordinates);
+        return movement;
     }
 
     @Override

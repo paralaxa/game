@@ -45,16 +45,25 @@ public abstract class Game<T extends Serializable,R> extends BaseIdentifiableEnt
 
     protected abstract Round<T, R> doCreateNewRound(Player<T> nextPlayer);
 
+    protected abstract Movement<T> createDefaultMovementForPiece(Long pieceId);
+
     public Round<T, R> commitRound(Movement<T> movement) {
+        Movement<T> previousMovement= activeRound.getMovement();
         activeRound.setMovement(movement);
         MovementStatus movementStatus = activeRound.getPlayer().doMove(board, movement);
-        if (!MovementStatus.DONE.equals(movementStatus)) {
+        if (isNextRoundBlockedForMovementStatus(movementStatus)) {
             activeRound.setRoundStatus(new RoundStatus(RoundState.IN_PROGRESS, movementStatus));
+            activeRound.setMovement(previousMovement==null? createDefaultMovementForPiece(movement.getPieceId()):previousMovement);
             return activeRound;
         }
         activeRound.setRoundEnd(LocalTime.now());
         activeRound = createNexRound();
+        activeRound.setMovement(movement);//todo nesetovat 2x movement
         return activeRound;
+    }
+
+    private boolean isNextRoundBlockedForMovementStatus(MovementStatus movementStatus){
+        return !MovementStatus.DONE.equals(movementStatus);
     }
 
 }

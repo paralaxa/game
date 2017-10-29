@@ -47,7 +47,7 @@ public class BoardTest {
         movement.setNewPosition(new TwoDimensionalCoordinates(new TwoDimensionalCoordinatesData(1, 2)));
         MovementStatus movementStatus = rectangularBoard.updateBasedOnMovement(movement);
         Assert.assertEquals(MovementStatus.ACTION_POSSIBLE, movementStatus);
-        Assert.assertEquals(new TwoDimensionalCoordinates(new TwoDimensionalCoordinatesData(1, 2)), rectangularBoard.getCoordinatesForPieceId(1l));
+        Assert.assertEquals(new TwoDimensionalCoordinates(new TwoDimensionalCoordinatesData(1, 1)), rectangularBoard.getCoordinatesForPieceId(1l));
     }
 
     @Test
