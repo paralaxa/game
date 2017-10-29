@@ -23,12 +23,12 @@ public class QuestionAction extends Action<Integer, TwoDimensionalCoordinatesDat
         } else {
             roundScore = -score;
         }
-        Coordinates<TwoDimensionalCoordinatesData> newPosition = game.getActiveRound().getMovement().getNewPosition();
+        Coordinates<TwoDimensionalCoordinatesData> newPosition = game.getActiveRound().getActualPossition().getNewPosition();
         Field<TwoDimensionalCoordinatesData> fieldForCoordinates = game.getBoard().getFieldForCoordinates(newPosition);
         ((ActionField) fieldForCoordinates).getAction().getActionData().setUsed(true);
         Player<TwoDimensionalCoordinatesData> activePlayer = game.getActiveRound().getPlayer();
         activePlayer.setScore(activePlayer.getScore() + roundScore);
-        game.commitRound(game.getActiveRound().getMovement());
+        game.commitRound(game.getActiveRound().getActualPossition());
         return roundScore;
     }
 }

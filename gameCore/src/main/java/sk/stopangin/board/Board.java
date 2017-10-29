@@ -51,8 +51,8 @@ public abstract class Board<T extends Serializable> {
                 if (isMovementCollision(movement)) {
                     return MovementStatus.COLLISION;
                 }
-                MovementStatus movementStatus = movementStatusBasedOnNewMovementFieldType(newMovementField);
-                if (MovementStatus.DONE.equals(movementStatus)) {
+                MovementStatus movementStatus = movementStatusBasedOnNewMovementFieldType(currentMovementField, newMovementField);
+                if (movementStatus.isAllowMovement()) {
                     removePieceFromField(currentMovementField);
                     putPieceOnNewField(newMovementField, currentMovementPiece);
                 }
@@ -64,18 +64,25 @@ public abstract class Board<T extends Serializable> {
         return MovementStatus.NON_EXISTING_FIELD;
     }
 
-    private MovementStatus movementStatusBasedOnNewMovementFieldType(Field<T> newMovementField) {
-        if (newMovementField instanceof ActionField) {
-            ActionData actionData = ((ActionField) newMovementField).getAction().getActionData();
+    private MovementStatus movementStatusBasedOnNewMovementFieldType(Field<T> currentMovementField, Field<T> newMovementField) {
+        if (currentMovementField instanceof ActionField) {
+            ActionData actionData = extractActionDataFromField((ActionField) currentMovementField);
             if (!actionData.isUsed()) {
-                if (actionData.isBlocking()) {
-                    return MovementStatus.ACTION_REQUIRED;
-                } else {
-                    return MovementStatus.ACTION_POSSIBLE;
-                }
+                return MovementStatus.ACTION_REQUIRED;
+            }
+        }
+
+        if (newMovementField instanceof ActionField) {
+            ActionData actionData = extractActionDataFromField((ActionField) newMovementField);
+            if (!actionData.isUsed()) {
+                return MovementStatus.ACTION_POSSIBLE;
             }
         }
         return MovementStatus.DONE;
+    }
+
+    private ActionData extractActionDataFromField(ActionField newMovementField) {
+        return newMovementField.getAction().getActionData();
     }
 
     private boolean isEverythingSetup(Piece<T> currentMovementPiece, Field<T> currentMovementField, Field<T> newMovementField) {
@@ -99,7 +106,7 @@ public abstract class Board<T extends Serializable> {
     }
 
     private void putPieceOnNewField(Field<T> field, Piece<T> currentMovementPiece) {
-            field.setPiece(currentMovementPiece);
+        field.setPiece(currentMovementPiece);
     }
 
     private void removePieceFromField(Field<T> field) {

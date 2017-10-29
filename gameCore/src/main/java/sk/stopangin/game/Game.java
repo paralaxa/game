@@ -3,6 +3,7 @@ package sk.stopangin.game;
 import lombok.Data;
 import sk.stopangin.board.Board;
 import sk.stopangin.entity.BaseIdentifiableEntity;
+import sk.stopangin.movement.Coordinates;
 import sk.stopangin.movement.Movement;
 import sk.stopangin.movement.MovementStatus;
 import sk.stopangin.player.Player;
@@ -14,11 +15,11 @@ import java.util.List;
 /**
  * Basic game class.
  *
- * @param <T>  {@link sk.stopangin.movement.Coordinates} data
- * @param <R>  {@link Round} data
+ * @param <T> {@link sk.stopangin.movement.Coordinates} data
+ * @param <R> {@link Round} data
  */
 @Data
-public abstract class Game<T extends Serializable,R> extends BaseIdentifiableEntity {
+public abstract class Game<T extends Serializable, R> extends BaseIdentifiableEntity {
     private Board<T> board;
     private List<Player<T>> players;
     private boolean initialized;
@@ -48,22 +49,30 @@ public abstract class Game<T extends Serializable,R> extends BaseIdentifiableEnt
     protected abstract Movement<T> createDefaultMovementForPiece(Long pieceId);
 
     public Round<T, R> commitRound(Movement<T> movement) {
-        Movement<T> previousMovement= activeRound.getMovement();
-        activeRound.setMovement(movement);
+        Movement<T> previousMovement = restorePreviousMovementForPiece(movement.getPieceId());
         MovementStatus movementStatus = activeRound.getPlayer().doMove(board, movement);
         if (isNextRoundBlockedForMovementStatus(movementStatus)) {
             activeRound.setRoundStatus(new RoundStatus(RoundState.IN_PROGRESS, movementStatus));
-            activeRound.setMovement(previousMovement==null? createDefaultMovementForPiece(movement.getPieceId()):previousMovement);
+            activeRound.setActualPossition(previousMovement == null ? createDefaultMovementForPiece(movement.getPieceId()) : previousMovement);
             return activeRound;
         }
         activeRound.setRoundEnd(LocalTime.now());
         activeRound = createNexRound();
-        activeRound.setMovement(movement);//todo nesetovat 2x movement
+        activeRound.setActualPossition(movement);
         return activeRound;
     }
 
-    private boolean isNextRoundBlockedForMovementStatus(MovementStatus movementStatus){
-        return !MovementStatus.DONE.equals(movementStatus);
+    private Movement<T> restorePreviousMovementForPiece(Long pieceId) {
+        Long playersPieceId = activeRound.getPlayer().findOrRepairPieceId(pieceId);
+        Coordinates<T> coordinatesForPieceId = board.getCoordinatesForPieceId(playersPieceId);
+        Movement<T> movement = new Movement<>();
+        movement.setPieceId(playersPieceId);
+        movement.setNewPosition(coordinatesForPieceId);
+        return movement;
+    }
+
+    private boolean isNextRoundBlockedForMovementStatus(MovementStatus movementStatus) {
+        return !MovementStatus.DONE.equals(movementStatus) && !MovementStatus.ACTION_POSSIBLE.equals(movementStatus);
     }
 
 }

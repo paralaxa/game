@@ -1,5 +1,6 @@
 package sk.stopangin.player;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import sk.stopangin.board.Board;
 import sk.stopangin.entity.BaseIdentifiableEntity;
@@ -13,6 +14,7 @@ import java.util.Set;
 @Data
 public abstract class Player<T extends Serializable> extends BaseIdentifiableEntity {
     private String name;
+    @JsonIgnore
     private Set<Piece<T>> pieces;
     private int score;
 
@@ -21,16 +23,20 @@ public abstract class Player<T extends Serializable> extends BaseIdentifiableEnt
         return doMovement(board, movement);
     }
 
+    public Long findOrRepairPieceId(Long pieceId) {
+        if (pieceNotSpecifiedForMovement(pieceId) && hasOnlyOnePiece()) {
+            return getPlayersOnlyPiece().getId();
+        }
+        if (hasPieceWithId(pieceId)) {
+            return pieceId;
+        } else {
+            throw new PlayerException("No piece with id:" + pieceId + " for player:" + name);
+        }
+    }
+
     private void updateMovementWithMyPiece(Movement<T> movement) {
         Long currentMovementPieceId = movement.getPieceId();
-        if (pieceNotSpecifiedForMovement(currentMovementPieceId) && hasOnlyOnePiece()) {
-            currentMovementPieceId = getPlayersOnlyPiece().getId();
-        }
-        if (hasPieceWithId(currentMovementPieceId)) {
-            movement.setPieceId(currentMovementPieceId);
-        } else {
-            throw new PlayerException("No piece with id:" + currentMovementPieceId + " for player:" + name);
-        }
+        movement.setPieceId(findOrRepairPieceId(currentMovementPieceId));
     }
 
     private Piece<T> getPlayersOnlyPiece() {

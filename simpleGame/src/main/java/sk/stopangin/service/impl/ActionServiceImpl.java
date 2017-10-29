@@ -13,8 +13,6 @@ import sk.stopangin.movement.TwoDimensionalCoordinatesData;
 import sk.stopangin.repository.GameRepository;
 import sk.stopangin.service.ActionService;
 
-import javax.ws.rs.Path;
-
 @RestController
 @RequestMapping("action")
 public class ActionServiceImpl implements ActionService<Integer, TwoDimensionalCoordinatesData, Void> {
@@ -30,7 +28,7 @@ public class ActionServiceImpl implements ActionService<Integer, TwoDimensionalC
 
     public Action<Integer, TwoDimensionalCoordinatesData, Void> getActionForCurrentRound(Long gameId) {
         Game<TwoDimensionalCoordinatesData, Void> game = gameRepository.getById(gameId);
-        Movement<TwoDimensionalCoordinatesData> movement = game.getActiveRound().getMovement();
+        Movement<TwoDimensionalCoordinatesData> movement = game.getActiveRound().getActualPossition();
         Coordinates<TwoDimensionalCoordinatesData> currentRoundPosition = movement.getNewPosition();
         Field<TwoDimensionalCoordinatesData> fieldForCoordinates = game.getBoard().getFieldForCoordinates(currentRoundPosition);
         if (fieldForCoordinates instanceof ActionField) {
