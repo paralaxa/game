@@ -2,7 +2,6 @@ package sk.stopangin.movement;
 
 import lombok.Data;
 
-import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 
 @Data

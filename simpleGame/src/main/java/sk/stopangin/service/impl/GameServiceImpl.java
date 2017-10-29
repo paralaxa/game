@@ -22,8 +22,6 @@ import sk.stopangin.repository.QuestionsRepository;
 import sk.stopangin.service.GameService;
 
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-import javax.ws.rs.QueryParam;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;

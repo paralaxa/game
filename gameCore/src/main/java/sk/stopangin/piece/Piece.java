@@ -2,8 +2,6 @@ package sk.stopangin.piece;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import sk.stopangin.entity.BaseIdentifiableEntity;
 import sk.stopangin.movement.Coordinates;
 import sk.stopangin.movement.MovementType;
