@@ -63,7 +63,7 @@ public abstract class Game<T extends Serializable, R> extends BaseIdentifiableEn
     }
 
     private Movement<T> restorePreviousMovementForPiece(Long pieceId) {
-        Long playersPieceId = activeRound.getPlayer().findOrRepairPieceId(pieceId);
+        Long playersPieceId = activeRound.getPlayer().findOrFillPieceIdIfNull(pieceId);
         Coordinates<T> coordinatesForPieceId = board.getCoordinatesForPieceId(playersPieceId);
         Movement<T> movement = new Movement<>();
         movement.setPieceId(playersPieceId);

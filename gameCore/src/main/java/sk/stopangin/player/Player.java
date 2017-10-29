@@ -30,7 +30,7 @@ public abstract class Player<T extends Serializable> extends BaseIdentifiableEnt
      * @param pieceId piece id to be found, or null, if there is only one piece for player
      * @return valid piece id for this player
      */
-    public Long findOrRepairPieceId(Long pieceId) {
+    public Long findOrFillPieceIdIfNull(Long pieceId) {
         if (pieceNotSpecifiedForMovement(pieceId) && hasOnlyOnePiece()) {
             return getPlayersOnlyPiece().getId();
         }
@@ -43,7 +43,7 @@ public abstract class Player<T extends Serializable> extends BaseIdentifiableEnt
 
     private void updateMovementWithMyPiece(Movement<T> movement) {
         Long currentMovementPieceId = movement.getPieceId();
-        movement.setPieceId(findOrRepairPieceId(currentMovementPieceId));
+        movement.setPieceId(findOrFillPieceIdIfNull(currentMovementPieceId));
     }
 
     private Piece<T> getPlayersOnlyPiece() {
