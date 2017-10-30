@@ -8,7 +8,6 @@ import java.io.Serializable;
 
 public interface GameService<T extends Serializable, R, A extends Serializable> {
 
-
     Long startGame(String playerName);
 
 

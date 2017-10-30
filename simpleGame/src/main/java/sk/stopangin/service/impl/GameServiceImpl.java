@@ -1,5 +1,6 @@
 package sk.stopangin.service.impl;
 
+import io.swagger.annotations.Api;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +32,7 @@ import java.util.Set;
 
 @RestController
 @RequestMapping("game")
+@Api(value = "game", description = "Operations for controlling the game flow.")
 public class GameServiceImpl implements GameService<TwoDimensionalCoordinatesData, Void, Integer> {
     private static final Logger log = LoggerFactory.getLogger(GameServiceImpl.class);
 
@@ -40,7 +42,7 @@ public class GameServiceImpl implements GameService<TwoDimensionalCoordinatesDat
     private GameRepository<TwoDimensionalCoordinatesData, Void> gameRepository;
 
     @GetMapping(path = "start")
-    public Long startGame(@RequestParam(value = "playerName", required = true)  String playerName) {
+    public Long startGame(@RequestParam(value = "playerName", required = true) String playerName) {
         List<Question> allQuestions = questionsRepository.getAllQuestions();
         SimpleGame game = new SimpleGame();
         Set<Field<TwoDimensionalCoordinatesData>> fields = new SimpleGameFieldsGenerator(9, allQuestions).generateFields();
@@ -54,7 +56,8 @@ public class GameServiceImpl implements GameService<TwoDimensionalCoordinatesDat
     }
 
     @PostMapping(path = "/{gameId}/commit", consumes = "application/json", produces = "application/json")
-    public Round<TwoDimensionalCoordinatesData, Void> commitRound(@PathVariable(value = "gameId", required = true)  Long gameId, @RequestBody(required = true) TwoDimensionalCoordinatesData twoDimensionalCoordinatesData) {
+    public Round<TwoDimensionalCoordinatesData, Void> commitRound(@PathVariable(value = "gameId", required = true) Long gameId, @RequestBody
+            (required = true) TwoDimensionalCoordinatesData twoDimensionalCoordinatesData) {
         log.info("committing round for game:{} with coordinates data:{}", gameId, twoDimensionalCoordinatesData);
         Game<TwoDimensionalCoordinatesData, Void> game = gameRepository.getById(gameId);
         Movement<TwoDimensionalCoordinatesData> movement = new Movement<>();
@@ -75,7 +78,8 @@ public class GameServiceImpl implements GameService<TwoDimensionalCoordinatesDat
     }
 
     @GetMapping(path = "/{gameId}/action")
-    public Action<Integer, TwoDimensionalCoordinatesData, Void> getActionForCurrentRound(@PathVariable(value = "gameId", required = true)Long gameId) {
+    public Action<Integer, TwoDimensionalCoordinatesData, Void> getActionForCurrentRound(@PathVariable(value = "gameId", required = true) Long
+                                                                                                     gameId) {
         Game<TwoDimensionalCoordinatesData, Void> game = gameRepository.getById(gameId);
         Movement<TwoDimensionalCoordinatesData> movement = game.getActiveRound().getActualPossition();
         Coordinates<TwoDimensionalCoordinatesData> currentRoundPosition = movement.getNewPosition();
