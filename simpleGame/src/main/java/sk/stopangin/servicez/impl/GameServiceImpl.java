@@ -1,4 +1,4 @@
-package sk.stopangin.service.impl;
+package sk.stopangin.servicez.impl;
 
 import io.swagger.annotations.Api;
 import org.slf4j.Logger;
