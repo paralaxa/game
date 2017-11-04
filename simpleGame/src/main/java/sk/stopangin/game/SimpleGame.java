@@ -40,11 +40,11 @@ public class SimpleGame extends Game<Integer, TwoDimensionalCoordinatesData, Voi
 
     private void enrichPlayersWithPieces(List<Player<TwoDimensionalCoordinatesData>> players) {
         long iter = 0;
-        for (Player player : players) {
+        for (Player <TwoDimensionalCoordinatesData>player : players) {
             player.setId(iter);
-            Piece piece = new AnyDirectionTwoDimensionalMovingPiece(player.getId(), player.getName() + "_piece");
+            Piece<TwoDimensionalCoordinatesData> piece = new AnyDirectionTwoDimensionalMovingPiece(player.getId(), player.getName() + "_piece");
             piece.setId(player.getId());
-            Set<Piece> pieces1 = new HashSet<>();
+            Set<Piece<TwoDimensionalCoordinatesData>> pieces1 = new HashSet<>();
             pieces1.add(piece);
             player.setPieces(pieces1);
             Field<TwoDimensionalCoordinatesData> beginningField = getBoard().getFieldForCoordinates(new TwoDimensionalCoordinates(new TwoDimensionalCoordinatesData(1, 1)));
@@ -54,7 +54,7 @@ public class SimpleGame extends Game<Integer, TwoDimensionalCoordinatesData, Voi
     }
 
     @Override
-    protected Player nextPlayer() {
+    protected Player<TwoDimensionalCoordinatesData> nextPlayer() {
         int activePlayerIndex = getPlayers().indexOf(getActiveRound().getPlayer());
         int nextPlayerIndex = 0;
         if (activePlayerIndex != getPlayers().size() - 1) {
