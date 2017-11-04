@@ -6,7 +6,6 @@ import sk.stopangin.service.to.player.PlayerDto;
 
 import java.io.Serializable;
 import java.time.LocalTime;
-import java.util.Optional;
 
 @Data
 public class RoundDto<T extends Serializable, R> {
