@@ -3,6 +3,9 @@ package sk.stopangin.game;
 import lombok.Data;
 import sk.stopangin.board.Board;
 import sk.stopangin.entity.BaseIdentifiableEntity;
+import sk.stopangin.field.Action;
+import sk.stopangin.field.ActionField;
+import sk.stopangin.field.Field;
 import sk.stopangin.movement.Coordinates;
 import sk.stopangin.movement.Movement;
 import sk.stopangin.movement.MovementStatus;
@@ -11,6 +14,7 @@ import sk.stopangin.player.Player;
 import java.io.Serializable;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Basic game class.
@@ -19,20 +23,26 @@ import java.util.List;
  * @param <R> {@link Round} data
  */
 @Data
-public abstract class Game<T extends Serializable, R> extends BaseIdentifiableEntity {
+public abstract class Game<A extends Serializable, T extends Serializable, R> extends BaseIdentifiableEntity {
     private Board<T> board;
     private List<Player<T>> players;
     private boolean initialized;
     private Round<T, R> activeRound;
 
-    public Round<T, R> startGame(Board<T> board, List<Player<T>> players, Player<T> activePlayer) {
+    protected  void preStartValidGame(Board<T> board, List<Player<T>> players, Player<T> activePlayer){}
+
+    public final Round<T, R> startGame(Board<T> board, List<Player<T>> players, Player<T> activePlayer) {
         if (isValidConfiguration(players, board)) {
+            preStartValidGame(board, players, activePlayer);
             this.board = board;
             this.players = players;
             initialized = true;
         }
+        postStartGame(board, players, activePlayer);
         return doCreateNewRound(activePlayer);
     }
+
+    protected  void postStartGame(Board<T> board, List<Player<T>> players, Player<T> activePlayer){}
 
     abstract boolean isValidConfiguration(List<Player<T>> players, Board<T> board);
 
@@ -51,12 +61,12 @@ public abstract class Game<T extends Serializable, R> extends BaseIdentifiableEn
         MovementStatus movementStatus = activeRound.getPlayer().doMove(board, movement);
         if (isNextRoundBlockedForMovementStatus(movementStatus)) {
             activeRound.setRoundStatus(new RoundStatus(RoundState.IN_PROGRESS, movementStatus));
-            activeRound.setActualPossition(previousMovement);
+            activeRound.setActualPossition(Optional.of(previousMovement));
             return activeRound;
         }
-        activeRound.setRoundEnd(LocalTime.now());
+        activeRound.setRoundEnd(LocalTime.now()); //todo maybe persist here, as the new line will do the cleanup.
         activeRound = createNexRound();
-        activeRound.setActualPossition(movement);
+        activeRound.setActualPossition(Optional.of(movement));
         return activeRound;
     }
 
@@ -70,7 +80,20 @@ public abstract class Game<T extends Serializable, R> extends BaseIdentifiableEn
     }
 
     private boolean isNextRoundBlockedForMovementStatus(MovementStatus movementStatus) {
-         return !movementStatus.isAllowMovement();
+        return !movementStatus.isAllowMovement();
+    }
+
+    public Optional<Action<A, T, R>> getActionForCurrentRound() {
+        Optional<Movement<T>> actualPossition = activeRound.getActualPossition();
+        Action<A, T, R> action = null;
+        if (actualPossition.isPresent()) {
+            Coordinates<T> currentRoundPosition = actualPossition.get().getNewPosition();
+            Field<T> fieldForCoordinates = getBoard().getFieldForCoordinates(currentRoundPosition);
+            if (fieldForCoordinates instanceof ActionField) {
+                action = ((ActionField<A, T, R>) fieldForCoordinates).getAction();
+            }
+        }
+        return Optional.ofNullable(action);
     }
 
 }

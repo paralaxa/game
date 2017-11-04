@@ -48,12 +48,12 @@ public final class RectangularBoardGenerator {
     private static Action<Integer, TwoDimensionalCoordinatesData, Void> getMockAction() {
         return new Action<Integer, TwoDimensionalCoordinatesData, Void>() {
             @Override
-            public Integer perform(Game<TwoDimensionalCoordinatesData, Void> game) {
+            public Integer perform(Game<Integer,TwoDimensionalCoordinatesData, Void> game) {
                 return null;
             }
 
             @Override
-            public Integer perform(Game<TwoDimensionalCoordinatesData, Void> game, String data) {
+            public Integer perform(Game<Integer,TwoDimensionalCoordinatesData, Void> game, String data) {
                 return null;
             }
         };

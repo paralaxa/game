@@ -1,6 +1,5 @@
 package sk.stopangin.player;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import sk.stopangin.board.Board;
 import sk.stopangin.entity.BaseIdentifiableEntity;
@@ -14,7 +13,6 @@ import java.util.Set;
 @Data
 public abstract class Player<T extends Serializable> extends BaseIdentifiableEntity {
     private String name;
-    @JsonIgnore
     private Set<Piece<T>> pieces;
     private int score;
 

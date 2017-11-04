@@ -14,7 +14,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class SimpleGame extends Game<TwoDimensionalCoordinatesData, Void> {
+public class SimpleGame extends Game<Integer, TwoDimensionalCoordinatesData, Void> {
 
 
     @Override
@@ -29,17 +29,22 @@ public class SimpleGame extends Game<TwoDimensionalCoordinatesData, Void> {
         return round;
     }
 
-    public Round<TwoDimensionalCoordinatesData, Void> startGame(SimpleBoard simpleBoard, List<Player<TwoDimensionalCoordinatesData>> players, Player<TwoDimensionalCoordinatesData> activePlayer) {
-        if (isValidConfiguration(players, simpleBoard)) {
-            Round<TwoDimensionalCoordinatesData, Void> round = super.startGame(simpleBoard, players, activePlayer);
-            enrichPlayersWithPieces(players);
-            return round;
-        }
-        throw new GameException("Not a valid configuration, either players are not defined or board is not of a type simple board");
-    }
+//    public Round<TwoDimensionalCoordinatesData, Void> startGame(SimpleBoard simpleBoard, List<Player<TwoDimensionalCoordinatesData>> players, Player<TwoDimensionalCoordinatesData> activePlayer) {
+//        if (isValidConfiguration(players, simpleBoard)) {
+//            Round<TwoDimensionalCoordinatesData, Void> round = super.startGame(simpleBoard, players, activePlayer);
+//            enrichPlayersWithPieces(players);
+//            return round;
+//        }
+//        throw new GameException("Not a valid configuration, either players are not defined or board is not of a type simple board");
+//    }
 
     public Round<TwoDimensionalCoordinatesData, Void> startGame(SimpleBoard simpleBoard, List<Player<TwoDimensionalCoordinatesData>> players) {
-        return this.startGame(simpleBoard, players, players.get(0));
+        return startGame(simpleBoard, players, players.get(0));
+    }
+
+    @Override
+    protected void postStartGame(Board<TwoDimensionalCoordinatesData> board, List<Player<TwoDimensionalCoordinatesData>> players, Player<TwoDimensionalCoordinatesData> activePlayer) {
+        enrichPlayersWithPieces(players);
     }
 
     private void enrichPlayersWithPieces(List<Player<TwoDimensionalCoordinatesData>> players) {

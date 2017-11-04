@@ -9,7 +9,7 @@ import java.io.Serializable;
 public abstract class Action<A extends Serializable, T extends Serializable, R> {
     private ActionData actionData;
 
-    public abstract A perform(Game<T, R> game);
+    public abstract A perform(Game<A, T, R> game);
 
-    public abstract A perform(Game<T, R> game, String data);
+    public abstract A perform(Game<A, T, R> game, String data);
 }

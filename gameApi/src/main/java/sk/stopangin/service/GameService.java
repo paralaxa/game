@@ -1,24 +1,23 @@
 package sk.stopangin.service;
 
-import sk.stopangin.board.Board;
-import sk.stopangin.field.Action;
-import sk.stopangin.game.Round;
+import sk.stopangin.service.to.game.RoundDto;
+import sk.stopangin.service.to.board.BoardDto;
+import sk.stopangin.service.to.field.ActionDataDto;
 
 import java.io.Serializable;
 
-public interface GameService<T extends Serializable, R, A extends Serializable> {
+interface GameService<T extends Serializable, R, A extends Serializable> {
 
     Long startGame(String playerName);
 
 
-    Round<T, R> commitRound(Long gameId, T coordinatesData);
+    RoundDto<T, R> commitRound(Long gameId, T coordinatesData);
 
 
-    Board<T> getBoard(Long gameId);
-
+    BoardDto<T> getBoard(Long gameId);
 
     A performAction(Long gameId, String data);
 
 
-    Action<A, T, R> getActionForCurrentRound( Long gameId);
+    ActionDataDto getActionDataForCurrentRound(Long gameId);
 }

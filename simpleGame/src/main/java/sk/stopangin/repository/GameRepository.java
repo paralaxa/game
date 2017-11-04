@@ -4,12 +4,12 @@ import sk.stopangin.game.Game;
 
 import java.io.Serializable;
 
-public interface GameRepository <T extends Serializable,R>{
-    Long save(Game<T,R> game);
+public interface GameRepository <A extends Serializable,T extends Serializable,R>{
+    Long save(Game<A,T,R> game);
 
-    Game<T,R> getById(Long id);
+    Game<A,T,R> getById(Long id);
 
-    void remove(Game<T,R> game);
+    void remove(Game<A,T,R> game);
 
     void remove(Long id);
 }

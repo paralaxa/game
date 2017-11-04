@@ -12,21 +12,12 @@
     <artifactId>gameApi</artifactId>
     <dependencies>
         <dependency>
-            <groupId>stopangin</groupId>
-            <artifactId>gameCore</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-        </dependency>
-        <dependency>
             <groupId>io.springfox</groupId>
             <artifactId>springfox-swagger-ui</artifactId>
-            <version>${springfox-swagger2}</version>
-            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>io.springfox</groupId>
             <artifactId>springfox-swagger2</artifactId>
-            <version>${springfox-swagger2}</version>
-            <scope>compile</scope>
         </dependency>
     </dependencies>
 

@@ -1,6 +1,5 @@
 package sk.stopangin.game;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NonNull;
 import sk.stopangin.movement.Movement;
@@ -8,18 +7,18 @@ import sk.stopangin.player.Player;
 
 import java.io.Serializable;
 import java.time.LocalTime;
+import java.util.Optional;
 
 @Data
 public class Round<T extends Serializable, R> {
-    private Movement<T> actualPossition;
+    private Optional<Movement<T>> actualPossition= Optional.empty();
     @NonNull
     private final Player<T> player;
     @NonNull
     private final LocalTime roundStart;
-    @JsonIgnore
     private LocalTime roundEnd;
     @NonNull
-    private final R data; //hod kockou napr.
+    private final R data; //ie dice throw
     @NonNull
     private RoundStatus roundStatus;
 
